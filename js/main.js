@@ -16,22 +16,39 @@ function initCallback(object) {
 	ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
 	ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
 
+	function finished(object) {
+	  if (!object) {
+	    // wrap alerts in API callbacks and event handlers
+	    // in a setTimeout to prevent deadlock in some browsers
+	    setTimeout(function() {
+	      alert('Bad or null KML.');
+	    }, 0);
+	    return;
+	  }
+	  ge.getFeatures().appendChild(object);
+	  var la = ge.createLookAt('');
+	  la.set(39.095, -94.586, 0, ge.ALTITUDE_RELATIVE_TO_GROUND, 15, 87, 500);
+	  ge.getView().setAbstractView(la);         
+	}
 
-	// Pull in sketchup model
-	var placemark = ge.createPlacemark('');
-	placemark.setName('model');
-	var model = ge.createModel('');
-	ge.getFeatures().appendChild(placemark);
-	var loc = ge.createLocation('');
-	model.setLocation(loc);
-	var link = ge.createLink('');
-	// A textured model created in Sketchup and exported as Collada.
-	link.setHref('http://earth-api-samples.googlecode.com/svn/trunk/examples/static/splotchy_box.dae');
-	model.setLink(link);
+	var url = 'http://ecoimpact-ondrae.dotcloud.com/data/sample_model.kmz';
+    google.earth.fetchKml(ge, url, finished);
 
-	placemark.setGeometry(model);
 
-	console.log(ge);
+	// // Pull in sketchup model
+	// var placemark = ge.createPlacemark('');
+	// placemark.setName('model');
+	// var model = ge.createModel('');
+	// ge.getFeatures().appendChild(placemark);
+	// var loc = ge.createLocation('');
+	// model.setLocation(loc);
+	// var link = ge.createLink('');
+	// // A textured model created in Sketchup and exported as Collada.
+	// link.setHref('http://earth-api-samples.googlecode.com/svn/trunk/examples/static/splotchy_box.dae');
+	// model.setLink(link);
+
+	// placemark.setGeometry(model);
+
 
 	// var point = ge.createPoint('');
 	// point.setLatitude(39.095);
