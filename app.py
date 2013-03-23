@@ -7,7 +7,11 @@ import os
 
 app = Flask(__name__)
 
-@app.route('/neighborhood')
+@app.route('/', methods=['POST', 'GET'])
+def index():
+    return render_template('index.html')
+
+@app.route('/neighborhood', methods=['POST', 'GET'])
 def neighborhood():
 	url = 'http://cfa.cartodb.com/api/v2/sql?q='
 	url = url + 'SELECT%20nbhname%20FROM%20kc_census_hoods%20WHERE%20ST_CONTAINS(the_geom,%20ST_GeomFromText(\'POINT(-94.58083%2039.08971)\',%204326))'
