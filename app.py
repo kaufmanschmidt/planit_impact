@@ -12,8 +12,8 @@ def index():
     return render_template('index.html')
 
 # Calls an example API to get some data from cartodb
-longitude = str(-94.58083)
-latitude = str(39.08971)
+longitude = str(-94.586)
+latitude = str(39.095)
 
 @app.route('/neighborhood', methods=['POST', 'GET'])
 def neighborhood():
@@ -23,7 +23,7 @@ def neighborhood():
 	r = requests.get(url)
 	rjson = r.json
 	nbhname = rjson['rows'][0]['nbhname']
-	return render_template('neighborhood.html', nbhname = nbhname)
+	return render_template('neighborhood.html', nbhname = nbhname, longitude = longitude, latitude = latitude)
 
 # ToDo: Google Earth template that zooms to this neighborhood
 
