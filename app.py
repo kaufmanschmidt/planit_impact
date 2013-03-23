@@ -7,13 +7,15 @@ import os
 
 app = Flask(__name__)
 
+@app.route('/', methods=['POST', 'GET'])
+def index():
+    return render_template('index.html')
 
 # Calls an example API to get some data from cartodb
-
 longitude = str(-94.58083)
 latitude = str(39.08971)
 
-@app.route('/neighborhood')
+@app.route('/neighborhood', methods=['POST', 'GET'])
 def neighborhood():
 	url = 'http://cfa.cartodb.com/api/v2/sql?q='
 	url = url + 'SELECT%20nbhname%20FROM%20kc_census_hoods%20WHERE%20'
