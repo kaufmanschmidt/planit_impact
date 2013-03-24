@@ -16,12 +16,19 @@ def index():
 def neighborhood():
 	latitude = request.args.get('latitude','')
 	longitude = request.args.get('longitude','')
-	url = 'http://cfa.cartodb.com/api/v2/sql?q='
-	url = url + 'SELECT%20nbhname%20FROM%20kc_census_hoods%20WHERE%20'
-	url = url + 'ST_CONTAINS(the_geom,%20ST_GeomFromText(\'POINT('+longitude+'%20'+latitude+')\',%204326))'
-	r = requests.get(url)
-	rjson = r.json
-	nbhname = rjson['rows'][0]['nbhname']
+
+	# Get the neighborhood name
+	def get_nbhname(latitude, longitude):
+		url = 'http://cfa.cartodb.com/api/v2/sql?q='
+		url = url + 'SELECT%20nbhname%20FROM%20kc_census_hoods%20WHERE%20'
+		url = url + 'ST_CONTAINS(the_geom,%20ST_GeomFromText(\'POINT('+longitude+'%20'+latitude+')\',%204326))'
+		r = requests.get(url)
+		rjson = r.json
+		nbhname = rjson['rows'][0]['nbhname']
+		return nbhname
+
+	nbhname = get_nbhname(latitude,longitude)
+
 	return render_template('neighborhood.html', nbhname = nbhname, longitude = longitude, latitude = latitude)
 
 # ToDo: Google Earth template that zooms to this neighborhood
