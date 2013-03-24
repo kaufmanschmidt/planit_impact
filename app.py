@@ -18,13 +18,13 @@ def neighborhood():
 	longitude = request.args.get('longitude','')
 
 	# Get open 311 cases in the neighborhood
-	def get_311(latitude, longitude):
-		url = 'http://cfa.cartodb.com/api/v2/sql?q=SELECT%20case_summary,%20latitude,%20longitude%20FROM%20crossroads_311'
+	def get_311():
+		url = 'http://cfa.cartodb.com/api/v2/sql?q=SELECT%20case_summary,%20x(the_geom)%20AS%20longitude,%20y(the_geom)%20AS%20latitude%20FROM%20crossroads_311'
 		r = requests.get(url)
 		cases = r.json['rows']
 		return cases
 
-	cases = get_311(latitude,longitude)
+	cases = get_311()
 
 	# Get the neighborhood name
 	def get_nbhname(latitude, longitude):
@@ -39,6 +39,64 @@ def neighborhood():
 	nbhname = get_nbhname(latitude,longitude)
 	
 	return render_template('neighborhood.html', cases = cases, nbhname = nbhname, longitude = longitude, latitude = latitude)
+
+#Calls an example API to get some data from cartodb
+@app.route('/buildingone', methods=['POST', 'GET'])
+def buildingone():
+	latitude = request.args.get('latitude','')
+	longitude = request.args.get('longitude','')
+
+	# Get open 311 cases in the neighborhood
+	def get_311():
+		url = 'http://cfa.cartodb.com/api/v2/sql?q=SELECT%20case_summary,%20x(the_geom)%20AS%20longitude,%20y(the_geom)%20AS%20latitude%20FROM%20crossroads_311'
+		r = requests.get(url)
+		cases = r.json['rows']
+		return cases
+
+	cases = get_311()
+
+	# Get the neighborhood name
+	def get_nbhname(latitude, longitude):
+		url = 'http://cfa.cartodb.com/api/v2/sql?q='
+		url = url + 'SELECT%20nbhname%20FROM%20kc_census_hoods%20WHERE%20'
+		url = url + 'ST_CONTAINS(the_geom,%20ST_GeomFromText(\'POINT('+longitude+'%20'+latitude+')\',%204326))'
+		r = requests.get(url)
+		rjson = r.json
+		nbhname = rjson['rows'][0]['nbhname']
+		return nbhname
+	
+	nbhname = get_nbhname(latitude,longitude)
+	
+	return render_template('buildingone.html', cases = cases, nbhname = nbhname, longitude = longitude, latitude = latitude)
+
+#Calls an example API to get some data from cartodb
+@app.route('/buildingtwo', methods=['POST', 'GET'])
+def buildingtwo():
+	latitude = request.args.get('latitude','')
+	longitude = request.args.get('longitude','')
+
+	# Get open 311 cases in the neighborhood
+	def get_311():
+		url = 'http://cfa.cartodb.com/api/v2/sql?q=SELECT%20case_summary,%20x(the_geom)%20AS%20longitude,%20y(the_geom)%20AS%20latitude%20FROM%20crossroads_311'
+		r = requests.get(url)
+		cases = r.json['rows']
+		return cases
+
+	cases = get_311()
+
+	# Get the neighborhood name
+	def get_nbhname(latitude, longitude):
+		url = 'http://cfa.cartodb.com/api/v2/sql?q='
+		url = url + 'SELECT%20nbhname%20FROM%20kc_census_hoods%20WHERE%20'
+		url = url + 'ST_CONTAINS(the_geom,%20ST_GeomFromText(\'POINT('+longitude+'%20'+latitude+')\',%204326))'
+		r = requests.get(url)
+		rjson = r.json
+		nbhname = rjson['rows'][0]['nbhname']
+		return nbhname
+	
+	nbhname = get_nbhname(latitude,longitude)
+	
+	return render_template('buildingtwo.html', cases = cases, nbhname = nbhname, longitude = longitude, latitude = latitude)
 
 # ToDo: Google Earth template that zooms to this neighborhood
 
