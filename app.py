@@ -35,9 +35,9 @@ def neighborhood():
 		rjson = r.json
 		nbhname = rjson['rows'][0]['nbhname']
 		return nbhname
-	
+
 	nbhname = get_nbhname(latitude,longitude)
-	
+
 	return render_template('neighborhood.html', cases = cases, nbhname = nbhname, longitude = longitude, latitude = latitude)
 
 # ToDo: Google Earth template that zooms to this neighborhood
