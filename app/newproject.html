@@ -306,6 +306,16 @@
 		<script src="js/retina.js"></script>
 
 		<script src="js/custom.js"></script>
+
+		<script>
+		$(function(){
+
+			$('.mappreview img').on('click', function(){
+				console.log("yes");
+				$('.mappreview img').attr({src:'img/pic.jpg'});
+			});
+		});
+		</script>
 	<!-- end: JavaScript-->
 	
 </body>
