@@ -1,14 +1,3 @@
-/*
-* Author: Łukasz Holeczek
-* Template: Acme Dashboard -  Bootstrap Theme
-* Version: 1.0.2
-* Bootstrap version: 2.3.0
-* Copyright 2013 creativeLabs
-* www: http://clabs.co
-* mail: lukasz@clabs.co
-* You can buy this theme on WrapBootstrap: https://wrapbootstrap.com/theme/acme-dashboard-bootstrap-admin-template-WB0JLR295
-*/
-
 /* Import Section
 =================================================================== */
 @import url("jquery-ui-1.8.21.custom.css");								/* jQuery User Interface Framework Styles */
@@ -28,6 +17,16 @@
 @import url("glyphicons.css");											/* Glyphicons Font */
 @import url("halflings.css");											/* Glyphicons Halflings Font */
 
+
+/* Added
+=================================================================== */
+
+.fiberbunny {
+	width: 10px;
+	height: auto;
+	padding-left: 2px;
+	padding-right: 2px;
+}
 
 /* Basic
 =================================================================== */

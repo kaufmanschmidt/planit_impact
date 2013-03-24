@@ -15,9 +15,7 @@
 	<link id="base-style-responsive" href="css/style-responsive.css" rel="stylesheet">
 	<link href="css/font-awesome.css" rel="stylesheet">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext' rel='stylesheet' type='text/css'>
-	
 	<!-- end: CSS -->
-	
 
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
@@ -28,18 +26,10 @@
 	<!--[if IE 9]>
 		<link id="ie9style" href="css/ie9.css" rel="stylesheet">
 	<![endif]-->
-		
-	<!-- start: Favicon -->
-	<link rel="shortcut icon" href="img/favicon.ico">
-	<!-- end: Favicon -->
-	
-		
-		
-		
 </head>
 
 <body>
-		<!-- start: Header -->
+	<!-- start: Header -->
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="container-fluid">
@@ -53,13 +43,14 @@
 				<!-- start: Header Menu -->
 				<div class="nav-no-collapse header-nav">
 					<ul class="nav pull-right">
-						<li><a class="btn" href="#"><i class="halflings-icon white wrench"></i></a></li>
+						<li><a class="btn btn-primary" href="dashboard.html"><span class="fa-icon-th-large"></span>&nbsp;&nbsp;Dashboard</a></li>
+
 						<!-- start: User Dropdown -->
 						<li class="dropdown">
 							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="fa-icon-user"></span>&nbsp;&nbsp;Andrew Hyder&nbsp;&nbsp;<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="fa-icon-user"></i> Settings</a></li>
-								<li><a href="login.html"><i class="fa-icon-off"></i> Logout</a></li>
+								<li><a href="#"><i class="fa-icon-off"></i> Logout</a></li>
 							</ul>
 						</li>
 						<!-- end: User Dropdown -->
@@ -73,18 +64,23 @@
 	<!-- start: Header -->
 	
 		<div class="container-fluid">
+		
 		<div class="row-fluid">
 				
 			<!-- start: Main Menu -->
 			<div id="sidebar-left" class="span1">
 				<div class="nav-collapse sidebar-nav tabbable">
 					<ul class="nav nav-tabs nav-stacked main-menu">
-						<li class="active"><a href="#tab1" data-toggle="tab"><i class="fa-icon-bar-chart"></i><span class="hidden-tablet"> Dashboard</span></a></li>	
-						<li><a href="#tab2" data-toggle="tab"><i class="fa-icon-hdd"></i><span class="hidden-tablet"> Infrastructure</span></a></li>
-						<li><a href="#tab3" data-toggle="tab"><i class="fa-icon-envelope"></i><span class="hidden-tablet"> Messages</span></a></li>
-						<li><a href="#tab4" data-toggle="tab"><i class="fa-icon-tasks"></i><span class="hidden-tablet"> Tasks</span></a></li>
-						<li><a href="#tab5" data-toggle="tab"><i class="fa-icon-eye-open"></i><span class="hidden-tablet"> UI Features</span></a></li>
-						<li><a href="#tab6" data-toggle="tab"><i class="fa-icon-dashboard"></i><span class="hidden-tablet"> Widgets</span></a></li>
+						<li class="active"><a href="#tab1" data-toggle="tab"><i class="fa-icon-globe"></i><span class="hidden-tablet"> Explore</span></a></li>	
+						<li><a href="#tab2" data-toggle="tab"><i class="fa-icon-tint"></i><span class="hidden-tablet"> Water Usage</span></a></li>
+						<li><a href="#tab2" data-toggle="tab"><i class="fa-icon-cloud"></i><span class="hidden-tablet"> Storm Water</span></a></li>
+						<li><a href="#tab3" data-toggle="tab"><i class="fa-icon-bolt"></i><span class="hidden-tablet"> Energy Usage</span></a></li>
+						<li><a href="#tab4" data-toggle="tab"><i class="fa-icon-leaf"></i><span class="hidden-tablet"> Greenhouse Gas</span></a></li>
+						<li><a href="#tab5" data-toggle="tab"><i class="fa-icon-trash"></i><span class="hidden-tablet"> Waste Production</span></a></li>
+						<li><a href="#tab6" data-toggle="tab"><i class="fa-icon-truck"></i><span class="hidden-tablet"> Transportation</span></a></li>
+						<li><a href="#tab7" data-toggle="tab"><i class="fa-icon-home"></i><span class="hidden-tablet"> Building Density</span></a></li>
+						<li><a href="#tab8" data-toggle="tab"><i class="fa-icon-sitemap"></i><span class="hidden-tablet"> Resource Flow</span></a></li>
+						<li><a href="#tab6" data-toggle="tab"><i class="fa-icon-money"></i><span class="hidden-tablet"> Potential ROI</span></a></li>
 					</ul>
 				</div>
 			</div>
@@ -131,9 +127,8 @@
 		<footer>
 			<p>
 				<span style="text-align:left;float:left">&copy; EcoImpact 2013</span>
-				<span class="hidden-phone" style="text-align:right;float:right">Powered by <a href="#">Google Fiber</a></span>
+				<span class="hidden-phone" style="text-align:right;float:right">Powered by Google Fiber <img class="fiberbunny" src="img/fiberbunny.png" /></span>
 			</p>
-
 		</footer>
 				
 	</div><!--/.fluid-container-->
