@@ -244,9 +244,7 @@ hr.thick {
 
 /* Landing
 -------------------------------------------------- */
-#landing {
-    padding: 30px 0;
-}
+
 #landing .js-video iframe {
 	-webkit-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
