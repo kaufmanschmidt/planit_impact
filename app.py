@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    return render_template('website/index.html')
+    return render_template('index.html')
 
 #Calls an example API to get some data from cartodb
 @app.route('/neighborhood', methods=['POST', 'GET'])
