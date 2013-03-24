@@ -26,7 +26,7 @@
 .navbar .nav > .active > a:hover,
 .navbar .nav > .active > a:focus {
     background: none repeat scroll 0 0 transparent;
-    border-bottom: 2px solid #308CCF;
+    border-bottom: 4px solid #86b79e;
     color: #FFFFFF;
 }
 
@@ -58,9 +58,16 @@
     background: none repeat scroll 0 0 #F1F1F1;
 }
 #header h1 {
-    color: #308CCF;
+    color: #256c6d;
 }
-
+h2 b{
+	color:#7fc241;
+}
+.btn-primary{
+	margin-top:20px !important;
+	background-color:#256c6d !important;
+	background-image: -webkit-linear-gradient(top,#86b79e,#256c6d)!important;
+}
 /* Main Content
 -------------------------------------------------- */
 #content {
@@ -68,7 +75,7 @@
     color: #394755;
 }
 .bouncy:hover i {
-    color: #0074CC;
+    color: #256c6d;
 }
 
 /* Pricing Tables
@@ -114,7 +121,7 @@ ul.plans {
 /* Footer
 -------------------------------------------------- */
 #footer {
-	background: none repeat scroll 0 0 #869674;
+	background: none repeat scroll 0 0 #86b79e;
     color: #17405E;
 }
 #footer h3  {
@@ -130,7 +137,7 @@ ul.plans {
 /* Copywrite
 -------------------------------------------------- */
 #copywrite {
-	background: none repeat scroll 0 0 #394755;
+	background: none repeat scroll 0 0 #5f543f;
     color: #D6DFE5;
 }
 
@@ -142,12 +149,12 @@ ul.plans {
   .navbar .nav-collapse .nav .active > a,
   .navbar .nav-collapse .nav .active > a:hover,
   .navbar .nav-collapse .nav .active > a:focus {
-    background-color: #308CCF;	
+    background-color: #86b79e;	
   }
   .navbar .nav-collapse .nav > li > a:hover {
-    background-color: #308CCF;
+    background-color: #86b79e;
   }
   .product-plan .feature .pull-right {
-    color: #308CCF;
+    color: #86b79e;
   }
 }
