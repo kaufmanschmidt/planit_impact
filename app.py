@@ -11,12 +11,11 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-# Calls an example API to get some data from cartodb
-longitude = str(-94.586)
-latitude = str(39.095)
-
+#Calls an example API to get some data from cartodb
 @app.route('/neighborhood', methods=['POST', 'GET'])
 def neighborhood():
+	latitude = request.args.get('latitude','')
+	longitude = request.args.get('longitude','')
 	url = 'http://cfa.cartodb.com/api/v2/sql?q='
 	url = url + 'SELECT%20nbhname%20FROM%20kc_census_hoods%20WHERE%20'
 	url = url + 'ST_CONTAINS(the_geom,%20ST_GeomFromText(\'POINT('+longitude+'%20'+latitude+')\',%204326))'

@@ -31,7 +31,7 @@
       }
       ge.getFeatures().appendChild(object);
       var la = ge.createLookAt('');
-      la.set({{latitude}}, {{longitude}}, 0, ge.ALTITUDE_RELATIVE_TO_GROUND, 15, 87, 500);
+      la.set({{latitude}}, {{longitude}}, 0, ge.ALTITUDE_RELATIVE_TO_GROUND, 0, 87, 400);
       ge.getView().setAbstractView(la);         
     }
 
@@ -49,5 +49,6 @@
 </head>
 <body>
   <div id="map3d" style="height: 400px; width: 100%;"></div>
+  <h2>Neighborhood name: {{nbhname}}</h2>
 </body>
 </html>
