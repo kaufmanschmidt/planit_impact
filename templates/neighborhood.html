@@ -20,23 +20,24 @@
       ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
       ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
 
-    function finished(object) {
-      if (!object) {
-        // wrap alerts in API callbacks and event handlers
-        // in a setTimeout to prevent deadlock in some browsers
-        setTimeout(function() {
-          alert('Bad or null KML.');
-        }, 0);
-        return;
-      }
-      ge.getFeatures().appendChild(object);
-      var la = ge.createLookAt('');
-      la.set({{latitude}}, {{longitude}}, 0, ge.ALTITUDE_RELATIVE_TO_GROUND, 0, 87, 400);
-      ge.getView().setAbstractView(la);         
-    }
+        function finished(object) {
+          if (!object) {
+            // wrap alerts in API callbacks and event handlers
+            // in a setTimeout to prevent deadlock in some browsers
+            setTimeout(function() {
+              alert('Bad or null KML.');
+            }, 0);
+            return;
+          }
+          ge.getFeatures().appendChild(object);
+          var la = ge.createLookAt('');
+          la.set({{latitude}}, {{longitude}}, 0, ge.ALTITUDE_RELATIVE_TO_GROUND, 0, 87, 400);
+          ge.getView().setAbstractView(la);         
+        }
 
-    var url = 'http://ecoimpact-ondrae.dotcloud.com/data/sample_model.kmz';
-    google.earth.fetchKml(ge, url, finished);
+        var url = 'http://ecoimpact-ondrae.dotcloud.com/data/sample_model.kmz';
+        google.earth.fetchKml(ge, url, finished);
+    
     }
 
     function failureCallback(object) {
@@ -50,5 +51,6 @@
 <body>
   <div id="map3d" style="height: 700px; width: 100%;"></div>
   <h2>Neighborhood name: {{nbhname}}</h2>
+  <h3>Local Open 311 Cases: {{cases}}
 </body>
 </html>
