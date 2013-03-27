@@ -1,8 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+	<script type="text/javascript" src="https://www.google.com/jsapi"> </script>
+  <script type="text/javascript">
+    var ge;
+    google.load("earth", "1");
+
+    function init() {
+      google.earth.createInstance("map3d", initCallback, failureCallback);
+    }
+
+    function initCallback(object) {
+      ge = object;
+      ge.getWindow().setVisibility(true);
+      ge.getOptions().setStatusBarVisibility(true);
+      ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
+      ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, false);
+      ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, false);
+      ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
+      ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
+
+        function finished(object) {
+          if (!object) {
+            // wrap alerts in API callbacks and event handlers
+            // in a setTimeout to prevent deadlock in some browsers
+            setTimeout(function() {
+              alert('Bad or null KML.');
+            }, 0);
+            return;
+          }
+          ge.getFeatures().appendChild(object);
+          var la = ge.createLookAt('');
+          la.set(39.08985, -94.58104, 0, ge.ALTITUDE_RELATIVE_TO_GROUND, -20, 80, 300);
+          ge.getView().setAbstractView(la);         
+        }
+        var url = 'http://kparikh.com/eco-impactDRAFT.kmz';
+        google.earth.fetchKml(ge, url, finished);
+    
+    }
+
+    function failureCallback(object) {
+      alert('Didn\'t work!');
+    }
+
+    google.setOnLoadCallback(init);
+  </script>
+
+
+
+
+
+
+
+
 	<meta charset="utf-8">
-	<title>EcoImpact</title>
+	<title>PlanIT Impact</title>
 	
 	<!-- start: Mobile Specific -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,7 +91,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="index.html"><span>EcoImpact</span></a>
+				<a class="brand" href="index.html"><span>PlanIT Impact</span></a>
 								
 				<!-- start: Header Menu -->
 				<div class="nav-no-collapse header-nav">
@@ -96,13 +149,12 @@
 			<!-- start: Content -->
 			<div id="content" class="span11 tab-content">
 				<div class="tab-pane active" id="tab1">
-				    <p>I'm in Section 1.</p>
+					<div id="map3d"></div>
 				</div>
 				<div class="tab-pane" id="tab2">
 				    <p>Howdy, I'm in Section 2.</p>
 				</div>
 				<div class="tab-pane" id="tab3">
-				    <p>Howdy, I'm in Section 3.</p>
 				</div>
 				<div class="tab-pane" id="tab4">
 				    <p>Howdy, I'm in Section 4.</p>
@@ -133,7 +185,7 @@
 		
 		<footer>
 			<p>
-				<span style="text-align:left;float:left">&copy; EcoImpact 2013</span>
+				<span style="text-align:left;float:left">&copy;  PlanIT Impact 2013</span>
 				<span class="hidden-phone" style="text-align:right;float:right">Powered by Google Fiber <img class="fiberbunny" src="img/fiberbunny.png" /></span>
 			</p>
 		</footer>
