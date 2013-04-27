@@ -4,12 +4,20 @@
 
 	<script type="text/javascript" src="https://www.google.com/jsapi"> </script>
   <script type="text/javascript">
+
+  	var latLng = window.location.href.slice(window.location.href.indexOf('?')).split(/[&?]{1}[\w\d]+=/);
+	var lat = parseFloat(latLng[1]);
+	var lng = parseFloat(latLng[2]);
+
+	console.log(lat, lng);
+
     var ge;
     google.load("earth", "1");
 
     function init() {
       google.earth.createInstance("map3d", initCallback, failureCallback);
     }
+
 
     function initCallback(object) {
       ge = object;
@@ -21,22 +29,26 @@
       ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
       ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
 
-        function finished(object) {
-          if (!object) {
-            // wrap alerts in API callbacks and event handlers
-            // in a setTimeout to prevent deadlock in some browsers
-            setTimeout(function() {
-              alert('Bad or null KML.');
-            }, 0);
-            return;
-          }
-          ge.getFeatures().appendChild(object);
-          var la = ge.createLookAt('');
-          la.set(39.08985, -94.58104, 0, ge.ALTITUDE_RELATIVE_TO_GROUND, -20, 80, 300);
-          ge.getView().setAbstractView(la);         
-        }
-        var url = 'http://kparikh.com/eco-impactDRAFT.kmz';
-        google.earth.fetchKml(ge, url, finished);
+      var la = ge.createLookAt('');
+      la.set(lat, lng, 0, ge.ALTITUDE_RELATIVE_TO_GROUND, -20, 80, 300);
+      ge.getView().setAbstractView(la);         
+
+        // function finished(object) {
+        //   if (!object) {
+        //     // wrap alerts in API callbacks and event handlers
+        //     // in a setTimeout to prevent deadlock in some browsers
+        //     setTimeout(function() {
+        //       alert('Bad or null KML.');
+        //     }, 0);
+        //     return;
+        //   }
+        //   ge.getFeatures().appendChild(object);
+        //   var la = ge.createLookAt('');
+        //   la.set(39.08985, -94.58104, 0, ge.ALTITUDE_RELATIVE_TO_GROUND, -20, 80, 300);
+        //   ge.getView().setAbstractView(la);         
+        // }
+        // var url = 'http://kparikh.com/eco-impactDRAFT.kmz';
+        // google.earth.fetchKml(ge, url, finished);
     
     }
 
