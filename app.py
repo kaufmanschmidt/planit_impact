@@ -29,5 +29,9 @@ def howitworks():
 def newproject():
     return render_template('newproject.html')
 
+@app.route("/report.html")
+def report():
+    return render_template('report.html')
+
 if __name__ == "__main__":
     app.run()
