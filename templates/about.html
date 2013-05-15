@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-primary btn-dropnav" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>    
+          <a class="brand" href="../index.html">PlanIT Impact</a>
+	      <div class="nav-collapse collapse">
+	        <ul class="nav pull-right animated">
+		        <li><a href="#">Home </a></li>
+		        <li class="active"><a href="about.html">About</a></li>
+		        <li><a href="features.html">Features</a></li>
+		        <li><a href="howitworks.html">How it Works</a></li>
+		        <li><a href="newproject.html">Demo</a></li>
+	        </ul>
+	      </div>
+        </div>
+      </div>
+    </div>  
+{% endblock %}
+
+{% block main %}
+	<div id="header">
+	  <div class="container">  
+	    <div class="row">
+		  <div class="span12">
+		    <h1>About PlanIT Impact</h1>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div id="content">
+	  <div class="container">			
+	    <div class="row">
+		  <div class="span6">	
+			<h2>Our Mission</h2>
+			<p>Our goal is to create the most information rich,  user friendly and interactive app to help designers, planners and constituents  visualize scenarios of future development and better understand the impacts of  our current environs.  </p>
+			<p>We are looking to  create an immersive, 3D virtual environment that is easily navigatable,  scalable, and editable and which provides visual layers of information  regarding the environmental, economic and social impacts. </p>
+			<p>            <a href="howitworks.html" class="btn btn-primary">How it Works </a></p>
+		  </div>
+		  <div class="span6">	
+			<h2>PlanIT Impact Purpose</h2>
+            <p>As a first of its kind platform, the PlanIT Impact web app would potentially change the way our municipal leaders and building industry professionals make decisions about where and how to invest in our communities. It also has the potential potential to be an enormously powerful educational tool for uses as broad as students learning about the environment to a research tool on how cities metabolize resources in order to work toward attaining a better equilibrium.</p>
+
+    
+		  </div>
+          <p>&nbsp;</p>		  
+		</div>
+        <div class="row">
+		  <div class="span12">
+			<h2 class="txt-middle">Our Hackathon Team</h2>
+		    <hr class="dashed">				
+		  </div>  
+		</div>		
+	    <div class="row">
+		  <div class="span12">
+		  <ul class="thumbnails">
+		    <li class="span3">
+			  <div id="team" class="thumbnail">			  
+                <img alt="" src="{{ url_for('static', filename='img/dominique.jpg') }}">	
+				<div class="caption">
+				  <h4>Dominique Davison</h4>
+				</div>
+			  </div> 
+			</li>
+		    <li class="span3">
+			  <div id="team" class="thumbnail">			  
+                <img alt="" src="{{ url_for('static', filename='img/andrewh.jpg') }}">	
+				<div class="caption">
+				  <h4>Andrew Hyder</h4>
+				</div>
+			  </div> 
+			</li> 
+            <li class="span3">
+			  <div id="team" class="thumbnail">			  
+                <img alt="" src="{{ url_for('static', filename='img/beth.jpg') }}">
+				<div class="caption">
+				  <h4>Beth Dawson</h4>
+				</div>
+			  </div> 
+			</li>
+		    <li class="span3">
+			  <div id="team" class="thumbnail">			  
+                <img alt="" src="{{ url_for('static', filename='img/abdul.jpg') }}">	
+				<div class="caption">
+				  <h4>Abdul Syed</h4>
+				</div>
+			  </div> 
+			</li> 
+		    <li class="span3">
+			  <div id="team" class="thumbnail">			  
+                <img alt="" src="{{ url_for('static', filename='img/andrewd.jpg') }}">	
+				<div class="caption">
+				  <h4>Andrew Douglass</h4>
+  				</div>
+			  </div> 
+			</li>
+		    <li class="span3">
+			  <div id="team" class="thumbnail">			  
+                <img alt="" src="{{ url_for('static', filename='img/sam.jpg') }}">	
+				<div class="caption">
+					<h4>Sam Agnew</h4>
+				</div>
+			  </div> 
+			</li>
+		    <li class="span3">
+			  <div id="team" class="thumbnail">			  
+                <img alt="" src="{{ url_for('static', filename='img/kay.jpg') }}">	
+				<div class="caption">
+				  <h4>Kaushal Parikh</h4>
+				</div>
+			  </div> 
+			</li>
+			<li class="span3">
+			  <div id="team" class="thumbnail">			  
+                <img alt="" src="{{ url_for('static', filename='img/ray.jpg') }}">	
+				<div class="caption">
+					<h4>Rhaynelina Estevez</h4>
+				</div>
+			  </div> 
+			</li>
+		    <li class="span3">
+			  <div id="team" class="thumbnail">			  
+                <img alt="" src="{{ url_for('static', filename='img/sarah.jpg') }}">	
+				<div class="caption">
+				  <h4>Sarah Hebert</h4>
+				</div>
+			  </div> 
+			</li>
+			<li class="span3">
+			  <div id="team" class="thumbnail">			  
+                <img alt="" src="https://lh3.googleusercontent.com/-dTPHe-xd8u8/Th-Y9CwcKdI/AAAAAAAAADs/yS83J1Tvg4c/w603-h601/Chad+June+2011.jpg" height="180px">	
+				<div class="caption">
+				  <h4>Chad Kozickic</h4>
+				</div>
+			  </div> 
+			</li>
+		  </ul>
+		</div>
+		</div>		
+	  </div>
+	</div>
+
+{% endblock %}

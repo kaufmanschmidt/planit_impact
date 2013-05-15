@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-primary btn-dropnav" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>    
+          <a class="brand" href="../index.html">PlanIT Impact</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav pull-right animated">
+            <li class="active"><a href="#">Home </a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="features.html">Features</a></li>
+            <li><a href="howitworks.html">How it Works</a></li>
+            <li><a href="newproject.html">Demo</a></li>
+          </ul>
+        </div>
+        </div>
+      </div>
+    </div>  
+{% endblock %}
+
+{% block main %}
+
+  <div id="landing">
+    <div class="container">  
+      <div class="row">
+      <div class="span6">
+       <h2>Our goal is to create the most <b>information rich</b>, <b>user friendly</b> and <b>interactive app</b> to help designers, planners and constituents visualize scenarios of future development and better understand the <b>impacts of our current environs.</b></h2>
+        <p><a href="newproject.html" class="btn btn-primary btn-action">View Demo</a></p>  
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div id="content" class="txt-middle">
+    <div class="container"> 
+    <hr class="dashed">       
+      <div class="row">
+        <div class="span4">
+          <a class="thumbnail" href="features.html">
+            <img alt="image" src="{{ url_for('static', filename='img/bim1.jpg') }}">
+          </a>    
+          <h2>Empower Your Community</h2>
+          <p>&nbsp;</p>
+        </div>
+        <div class="span4">
+          <a class="thumbnail" href="features.html">
+            <img alt="image" src="{{ url_for('static', filename='img/bim2.jpg') }}">
+          </a>
+          <h2>Dynamic Visualization</h2>
+          <p>&nbsp;</p>
+        </div>
+        <div class="span4">
+          <a class="thumbnail" href="features.html">
+            <img alt="image" src="{{ url_for('static', filename='img/bim3.jpg') }}">
+          </a>
+          <h2>One Tool That Does It All</h2>
+          <p>&nbsp;</p>
+        </div>      
+      </div>
+      <hr class="dashed">     
+    </div>
+  </div>
+
+{% endblock %}

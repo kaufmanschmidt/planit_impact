@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-primary btn-dropnav" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>    
+          <a class="brand" href="../index.html">PlanIT Impact</a>
+	      <div class="nav-collapse collapse">
+	        <ul class="nav pull-right animated">
+		        <li><a href="#">Home </a></li>
+		        <li><a href="about.html">About</a></li>
+		        <li><a href="features.html">Features</a></li>
+		        <li class="active"><a href="howitworks.html">How it Works</a></li>
+		        <li><a href="newproject.html">Demo</a></li>
+	        </ul>
+	      </div>
+        </div>
+      </div>
+    </div>  
+{% endblock %}
+
+{% block main %}
+	<div id="header">
+	  <div class="container">  
+	    <div class="row">
+		  <div class="span12">
+		    <h1>How it Works</h1>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div id="content">
+	  <div class="container">			
+	    <div class="row">
+		  <div class="span12">	
+			<h2>The PlanIT Brain</h2>
+			<p>&nbsp;</p>
+			<p><img src="{{ url_for('static', filename='img/brain.jpg') }}" alt="Brain" width="661" height="559"></p>
+		  </div>
+		  <div class="span6"></div>		  
+		</div>
+        
+		</div>
+		</div>		
+	  </div>
+	</div>
+
+{% endblock %}
