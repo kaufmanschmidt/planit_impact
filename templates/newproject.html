@@ -34,13 +34,18 @@
 			<div class="row">
 				<h1 class="title span6">New Project</h1>
 			</div>
-			<div class="row">
-
-			</div>
-
+			<form action="{{ url }}" method="post" enctype="{{ encoding }}">
+				<input type="hidden" name="key" value="{{ key }}">
+				<input type="hidden" name="AWSAccessKeyId" value="{{ AWS_ACCESS_KEY_ID }}"> 
+				<input type="hidden" name="acl" value="{{ acl }}"> 
+				<input type="hidden" name="success_action_redirect" value="{{ redirect }}">
+				<input type="hidden" name="policy" value="{{ policy }}">
+				<input type="hidden" name="signature" value="{{ signature }}">
+				<input type="hidden" name="Content-Type" value="image/jpeg">
+				<input name="file" type="file"> 
+				<input type="submit" value="Upload File to S3"> 
+			</form> 
 		</div>
-			
-
 {% endblock %}
 
 {% block js_footer %}
