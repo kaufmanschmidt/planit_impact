@@ -8,9 +8,9 @@ app = Flask(__name__)
 heroku = Heroku(app)
 app.config['DEBUG'] = True
 
-app.config.setdefault('AWS_ACCESS_KEY_ID', environ.get('AWS_ACCESS_KEY_ID'))
-app.config.setdefault('AWS_SECRET_ACCESS_KEY', environ.get('AWS_SECRET_ACCESS_KEY'))
-app.config.setdefault('S3_BUCKET_NAME', environ.get('S3_BUCKET_NAME'))
+app.config.setdefault('AWS_ACCESS_KEY_ID', os.environ.get('AWS_ACCESS_KEY_ID'))
+app.config.setdefault('AWS_SECRET_ACCESS_KEY', os.environ.get('AWS_SECRET_ACCESS_KEY'))
+app.config.setdefault('S3_BUCKET_NAME', os.environ.get('S3_BUCKET_NAME'))
 
 @app.route("/")
 @app.route("/index.html")
