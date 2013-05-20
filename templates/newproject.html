@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 
 {% block head_js %}
-	<link id="base-style" href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-	<link id="base-style-responsive" href="{{ url_for('static', filename='css/style-responsive.css') }}" rel="stylesheet">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext' rel='stylesheet' type='text/css'>
 {% endblock %}
 
 {% block header %}
@@ -37,174 +34,14 @@
 			<div class="row">
 				<h1 class="title span6">New Project</h1>
 			</div>
+			<div class="row">
 
-		<div class="row">
+			</div>
+
+		</div>
 			
-			<!-- start: Content -->
-			<div class="span12 smaller">
-				<div id="content">
-					<div class="row">
-					<div class="mappreview span9">
-						<img src="http://placehold.it/990x400&text=No+KML+Selected">
-					</div>
-					<div class="span10">
-						<div class="row">
-							<h2>Instructions</h2>
-							<a id="report" href="report.html" class="btn btn-success btn-large pull-right"><span class="fa-icon-ok"></span>&nbsp;&nbsp;Generate Report</a>
-							<p class="span5">We need to gather some information about your project in order to generate a report. The report will only include sections you fill out entirely, and the data used will be saved in your dashboard for future reference. Some data will be pulled from your KML file.</p>
-						</div>
-						<h2>Project Information</h2>
-							<form class="form">
-								<fieldset>
-								  <div class="control-group">
-									<label class="control-label" for="prependedInput">Title</label>
-									<div class="controls">
-									  <div class="input">
-										<input class="input-block-level" id="prependedInput" size="16" type="text">
-									  </div>
-									</div>
-								  </div>
-								  <div class="control-group">
-								  	<label class="control-label" for="prependedInput">Location</label>
-								  	<div class="controls">
-								  	  <div class="input">
-								  		<input class="input-block-level location" id="prependedInput" size="16" type="text">
-								  	  </div>
-								  	</div>
-								   </div>
-								     
-								  <div class="control-group">
-									<label class="control-label">Upload KML Drawing</label>
-									<div class="controls">
-									  <div class="uploader"><input type="file"><span class="filename" style="-webkit-user-select: none;">No file selected</span><span class="action" style="-webkit-user-select: none;">Choose File</span></div>
-									</div>
-								  </div>
-								</fieldset>
-							</form>
-						</div>
-					</div>
-					<div class="row ui-srtable">
-						<div class="box span12" style="">
-							<div class="box-header" data-original-title="">
-								<h2><i class="halflings-icon edit"></i><span class="break"></span>Storm Water Impact Factors</h2>
-								<div class="box-icon">
-									<a href="#" class="btn-minimize"><i class="halflings-icon chevron-down icon-chevron-down"></i></a>					
-								</div>
-							</div>
-							<div class="box-content" style="display: none;">
-								<form class="form">
-									<fieldset>
-									  <div class="control-group">
-										<label class="control-label">Percent Impervious Surface - Ground Level</label>
-										<div class="controls">
-										  <input class="input-xlarge" type="text" value="">
-										</div>
-									  </div>
-									    <div class="control-group">
-									  	<label class="control-label">Percent Impervious Surface - Roof Level</label>
-									  	<div class="controls">
-									  	  <input class="input-xlarge" type="text" value="">
-									  	</div>
-									    </div>
-									      <div class="control-group">
-									    	<label class="control-label">Surface Absorption by Material A</label>
-									    	<div class="controls">
-									    	  <input class="input-xlarge" type="text" value="">
-									    	</div>
-									      </div>
-									        <div class="control-group">
-									      	<label class="control-label">Surface Absorption by Material B</label>
-									      	<div class="controls">
-									      	  <input class="input-xlarge" type="text" value="">
-									      	</div>
-									        </div>
-									  
-									</fieldset>
-								  </form>
-							
-							</div>
-						</div><!--/span-->
-
-					</div>
-					<div class="row ui-srtable">
-						<div class="box span12" style="">
-							<div class="box-header" data-original-title="">
-								<h2><i class="halflings-icon edit"></i><span class="break"></span>Water Usage Impact Factors</h2>
-								<div class="box-icon">
-									<a href="#" class="btn-minimize"><i class="halflings-icon chevron-down icon-chevron-down"></i></a>					
-								</div>
-							</div>
-							<div class="box-content" style="display: none;">
-								<form class="form">
-									<fieldset>
-									  <div class="control-group">
-										<label class="control-label">Water Saver Fixtures</label>
-										<div class="controls">
-										  <input class="input-xlarge" type="text" value="">
-										</div>
-									  </div>
-									    <div class="control-group">
-									  	<label class="control-label">Site Irrigation Method</label>
-									  	<div class="controls">
-									  	  <input class="input-xlarge" type="text" value="">
-									  	</div>
-									    </div>
-									      <div class="control-group">
-									    	<label class="control-label">Occupant Load/Day</label>
-									    	<div class="controls">
-									    	  <input class="input-xlarge" type="text" value="">
-									    	</div>
-									      </div>
-									        <div class="control-group">
-									      	<label class="control-label">Average Hours Occupied/Day/Occupant</label>
-									      	<div class="controls">
-									      	  <input class="input-xlarge" type="text" value="">
-									      	</div>
-									        </div>
-									  
-									</fieldset>
-								  </form>
-							
-							</div>
-						</div><!--/span-->
-
-					</div>
-
-					<div class="row ui-srtable"><div class="box span12" style=""><div class="box-header" data-original-title=""><h2><i class="halflings-icon edit"></i><span class="break"></span>
-					Energy Usage
-					</h2><div class="box-icon"><a href="#" class="btn-miimize"><i class="halflings-icon chevron-down icon-chevron-down"></i></a></div></div></div></div>
-					<div class="row ui-srtable"><div class="box span12" style=""><div class="box-header" data-original-title=""><h2><i class="halflings-icon edit"></i><span class="break"></span>
-					Greenhouse Gases
-					</h2><div class="box-icon"><a href="#" class="btn-miimize"><i class="halflings-icon chevron-down icon-chevron-down"></i></a></div></div></div></div>
-					<div class="row ui-srtable"><div class="box span12" style=""><div class="box-header" data-original-title=""><h2><i class="halflings-icon edit"></i><span class="break"></span>
-					Waste Production
-					</h2><div class="box-icon"><a href="#" class="btn-miimize"><i class="halflings-icon chevron-down icon-chevron-down"></i></a></div></div></div></div>
-					<div class="row ui-srtable"><div class="box span12" style=""><div class="box-header" data-original-title=""><h2><i class="halflings-icon edit"></i><span class="break"></span>
-					Transportation
-					</h2><div class="box-icon"><a href="#" class="btn-miimize"><i class="halflings-icon chevron-down icon-chevron-down"></i></a></div></div></div></div>
-					<div class="row ui-srtable"><div class="box span12" style=""><div class="box-header" data-original-title=""><h2><i class="halflings-icon edit"></i><span class="break"></span>
-					Building Density and Mix
-					</h2><div class="box-icon"><a href="#" class="btn-miimize"><i class="halflings-icon chevron-down icon-chevron-down"></i></a></div></div></div></div>
-					<div class="row ui-srtable"><div class="box span12" style=""><div class="box-header" data-original-title=""><h2><i class="halflings-icon edit"></i><span class="break"></span>
-					Material Resource Flow
-					</h2><div class="box-icon"><a href="#" class="btn-miimize"><i class="halflings-icon chevron-down icon-chevron-down"></i></a></div></div></div></div>
-					<div class="row ui-srtable"><div class="box span12" style=""><div class="box-header" data-original-title=""><h2><i class="halflings-icon edit"></i><span class="break"></span>
-					Potential Return on Investment
-					</h2><div class="box-icon"><a href="#" class="btn-miimize"><i class="halflings-icon chevron-down icon-chevron-down"></i></a></div></div></div></div>
-				</div>
-			</div><!-- end: Content -->
-				
-	</div><!--/.fluid-container-->
-</div>
 
 {% endblock %}
 
 {% block js_footer %}
-<script>
-	$(function(){
-		$('.mappreview img').on('click', function(){
-			$('.mappreview img').attr({src:"{{ url_for('static', filename='img/pic.jpg') }}"});
-		});
-	});
-</script>
 {% endblock %}
