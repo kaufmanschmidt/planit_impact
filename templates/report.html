@@ -54,7 +54,7 @@
 	          la.set(lat, lng, 0, ge.ALTITUDE_RELATIVE_TO_GROUND, -20, 80, 300);
 	          ge.getView().setAbstractView(la);         
 	        }
-	        var url = 'http://planitimpact.org/models/19thAndGrand.kmz';
+	        var url = 'https://s3.amazonaws.com/planit-impact-models/{{model_name}}';
 	        google.earth.fetchKml(ge, url, finished);
 	    
 	    }

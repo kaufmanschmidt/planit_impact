@@ -32,27 +32,10 @@
 		<div class="container">
 		
 			<div class="row">
-				<h1 class="title span6">New Project</h1>
+				<h1 class="title span6">{{ model_name }}</h1>
+				<p><a href="{{ model_name }}/report" class="btn btn-primary btn-action">Run Report</a></p>
 			</div>
-			<div class="span4">
-				<form action="{{ url }}" method="post" enctype="{{ encoding }}">
-					<input type="hidden" name="key" value="{{ key }}">
-					<input type="hidden" name="AWSAccessKeyId" value="{{ AWS_ACCESS_KEY_ID }}"> 
-					<input type="hidden" name="acl" value="{{ acl }}"> 
-					<input type="hidden" name="success_action_redirect" value="{{ redirect }}">
-					<input type="hidden" name="policy" value="{{ policy }}">
-					<input type="hidden" name="signature" value="{{ signature }}">
-					<input type="hidden" name="Content-Type" value="image/jpeg">
-					<input name="file" type="file"> 
-					<input type="submit" value="Upload File to S3"> 
-				</form>
-			</div>
-			<div class="span4">
-				Or choose an existing project.
-				{% for model_name in model_names %}
-				    <ol><li><a href="project/{{ model_name }}">{{ model_name }}</a></li></ol>
-				{% endfor %}
-			</div>
+			
 		</div>
 {% endblock %}
 

@@ -10,18 +10,18 @@ def upload_to_s3(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,theBucket):
 	theNow = theNow.isoformat() + 'Z'
 	theExpiration = theExpiration.isoformat() + 'Z'
 
-	thePath = '%s' % 'models' #uuid.uuid4().hex
+	#thePath = '%s' % 'models' #uuid.uuid4().hex
 	theRedirect = url_for('uploaded', _external = True)
 	theACL = 'private'
 	thePolicy = {
 		'expiration': theExpiration,
 		'conditions': [ 
 			{'bucket': theBucket}, 
-			['starts-with', '$key', '%s/' % thePath],
+			['starts-with', '$key', ''], #, '%s/' % thePath],
 			{'acl': theACL},
 			{'success_action_redirect': theRedirect},
 			['starts-with', '$Content-Type', ''],
-			['content-length-range', 0, 1048576]
+			['content-length-range', 0, 104857600]
 		  ]
 		}
 	thePolicy = json.dumps(thePolicy)
@@ -36,7 +36,7 @@ def upload_to_s3(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,theBucket):
 		'redirect':  theRedirect,
 		'acl':  theACL,
 		'AWS_ACCESS_KEY_ID': AWS_ACCESS_KEY_ID,
-		'key': '%s/${filename}' % thePath,
+		'key': '${filename}', #% thePath,
 		'url': 'https://%s.s3.amazonaws.com/' % theBucket,
 		'encoding': 'multipart/form-data',
 		'expiration': theExpiration,

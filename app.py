@@ -1,7 +1,6 @@
-import json
+import os, json, boto, requests
 from flask import Flask, flash, request, render_template, url_for, redirect, make_response
 from werkzeug import secure_filename
-import os
 from flask.ext.heroku import Heroku
 
 app = Flask(__name__)
@@ -47,19 +46,32 @@ def uploaded():
 
 @app.route('/newproject.html')
 def newproject():
-	import upload
+	import upload_s3
 
 	AWS_ACCESS_KEY_ID = app.config['AWS_ACCESS_KEY_ID']
 	AWS_SECRET_ACCESS_KEY = app.config['AWS_SECRET_ACCESS_KEY']
 	theBucket = app.config['S3_BUCKET_NAME']
 	
 	theParameters = upload.upload_to_s3(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,theBucket)
-	return render_template('newproject.html', **theParameters)
+
+	# Download existing models
+	model_names = []
+	conn = boto.connect_s3()
+	mybucket = conn.get_bucket('planit-impact-models') # Substitute in your bucket name
+	file_list = mybucket.list()
+	for file_path in file_list:
+		model_names.append(file_path.name)
+
+	return render_template('newproject.html', model_names=model_names, **theParameters)
+
+@app.route('/project/<model_name>')
+def project(model_name):
+	return render_template('project.html', model_name=model_name)
 
 
-@app.route("/report.html")
-def report():
-    return render_template('report.html')
+@app.route("/project/<model_name>/report")
+def report(model_name):
+    return render_template('report.html', model_name=model_name)
 
 if __name__ == "__main__":
     app.run()
