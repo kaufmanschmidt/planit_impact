@@ -52,7 +52,7 @@ def newproject():
 	AWS_SECRET_ACCESS_KEY = app.config['AWS_SECRET_ACCESS_KEY']
 	theBucket = app.config['S3_BUCKET_NAME']
 	
-	theParameters = upload.upload_to_s3(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,theBucket)
+	theParameters = upload_s3.upload_to_s3(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,theBucket)
 
 	# Download existing models
 	model_names = []
