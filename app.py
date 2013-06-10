@@ -69,9 +69,9 @@ def project(model_name):
 	return render_template('project.html', model_name=model_name)
 
 
-@app.route("/project/<model_name>/report")
+@app.route("/project/<model_name>/report/explore")
 def report(model_name):
-    return render_template('report.html', model_name=model_name)
+    return render_template('explore.html', model_name=model_name)
 
 if __name__ == "__main__":
     app.run()
