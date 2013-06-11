@@ -19,7 +19,8 @@ PlanIT Impact is written in Python, and runs as a standalone [Flask application]
 1. Clone the repo `git clone git@github.com:ondrae/planit_impact.git`
 2. Move into the repository folder. `cd planit_impact`
 3. Run the setup script. `source setup.sh`
-4. Start the app. `python app.py`
+4. Get the AWS keys from [Ondrae](https://github.com/ondrae).
+5. Start the app. `python app.py`
 
 ## <a name="contributing"></a>Contributing
 In the spirit of [free software][free-sw], **everyone** is encouraged to help
