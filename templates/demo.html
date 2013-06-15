@@ -32,11 +32,27 @@
 		<div class="container">
 		
 			<div class="row">
-				<h1 class="title span6">{{ model_name }}</h1>
-				<h3>{{lat}}, {{lon}}</h3>
-				<p><a href="{{ model_name }}/report/explore" class="btn btn-primary btn-action">Run Report</a></p>
+				<h1 class="title span6">Demo</h1>
 			</div>
-			
+			<div class="row">
+				<div class="span4">
+					<form action="{{ url_for('demo') }}" method="post" enctype="multipart/form-data">
+					  <fieldset>
+					    <label>Choose a file to upload.</label>
+					    <input type="file" name="file">
+						<input type="submit" value="Upload your selected file" class="btn"> 
+					  </fieldset>
+					</form>
+				</div>
+				<div class="span4">
+					Or choose an existing project.
+					<ol>
+					{% for model_name in model_names %}
+					    <li><a href="project/{{ model_name }}">{{ model_name }}</a></li>
+					{% endfor %}
+					</ol>
+				</div>
+			</div>
 		</div>
 {% endblock %}
 

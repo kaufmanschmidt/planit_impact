@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% block head_js %}
+{% endblock %}
+
 {% block header %}
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -15,8 +18,8 @@
 		        <li><a href="#">Home </a></li>
 		        <li><a href="about">About</a></li>
 		        <li><a href="features">Features</a></li>
-		        <li class="active"><a href="howitworks">How it Works</a></li>
-		        <li><a href="demo">Demo</a></li>
+		        <li><a href="howitworks">How it Works</a></li>
+		        <li class="active"><a href="demo">Demo</a></li>
 	        </ul>
 	      </div>
         </div>
@@ -25,30 +28,20 @@
 {% endblock %}
 
 {% block main %}
-	<div id="header">
-	  <div class="container">  
-	    <div class="row">
-		  <div class="span12">
-		    <h1>How it Works</h1>
-		  </div>
-		</div>
-	  </div>
-	</div>
 
-	<div id="content">
-	  <div class="container">			
-	    <div class="row">
-		  <div class="span12">	
-			<h2>The PlanIT Brain</h2>
-			<p>&nbsp;</p>
-			<p><img src="{{ url_for('static', filename='img/brain.jpg') }}" alt="Brain" width="661" height="559"></p>
-		  </div>
-		  <div class="span6"></div>		  
+		<div class="container">
+		
+			<div class="row">
+				<h1 class="title span6">Upload</h1>
+			</div>
+			<div class="span4">
+				<form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+					<input name="file" type="file"> 
+					<input type="submit" value="Upload File"> 
+				</form>
+			</div>
 		</div>
-        
-		</div>
-		</div>		
-	  </div>
-	</div>
+{% endblock %}
 
+{% block js_footer %}
 {% endblock %}
