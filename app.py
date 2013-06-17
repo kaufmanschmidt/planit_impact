@@ -17,7 +17,8 @@ db = SQLAlchemy(app)
 
 app.config.update(
     DEBUG = True,
-    SQLALCHEMY_DATABASE_URI = 'postgres://hackyourcity@localhost/planit'
+    # For local development, put in your own user name
+    # SQLALCHEMY_DATABASE_URI = 'postgres://hackyourcity@localhost/planit'
 )
 
 app.config.setdefault('AWS_ACCESS_KEY_ID', os.environ.get('AWS_ACCESS_KEY_ID'))
