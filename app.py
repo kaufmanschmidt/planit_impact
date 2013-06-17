@@ -5,7 +5,6 @@ from werkzeug import secure_filename
 
 from flask.ext.heroku import Heroku
 from flask.ext.sqlalchemy import SQLAlchemy
-from pykml import parser
 
 #----------------------------------------
 # initialization
@@ -17,10 +16,11 @@ db = SQLAlchemy(app)
 
 app.config.update(
     DEBUG = True,
-    # For local development, put in your own user name
+    # For local development, uncomment and put in your own user name
     # SQLALCHEMY_DATABASE_URI = 'postgres://hackyourcity@localhost/planit'
 )
 
+# Might not need these anymore? What config key does boto use?
 app.config.setdefault('AWS_ACCESS_KEY_ID', os.environ.get('AWS_ACCESS_KEY_ID'))
 app.config.setdefault('AWS_SECRET_ACCESS_KEY', os.environ.get('AWS_SECRET_ACCESS_KEY'))
 app.config.setdefault('S3_BUCKET_NAME', os.environ.get('S3_BUCKET_NAME'))
@@ -46,7 +46,7 @@ class ThreeDeeModel(db.Model):
 
 	def open_model(self):
 		z = zipfile.ZipFile(self.localpath)
-		z.extractall()
+		z.extractall('tmp')
 
 	def get_lat_lon_from_model(self):
 		kml = open('tmp/doc.kml','r').read()
@@ -57,7 +57,7 @@ class ThreeDeeModel(db.Model):
 
 	def upload_to_s3(self):
 		conn = boto.connect_s3()
-		mybucket = conn.get_bucket('planit-impact-models') # Substitute in your own bucket name
+		mybucket = conn.get_bucket('planit-impact-models')
 		k = Key(mybucket)
 		k.key = self.name
 		k.set_contents_from_filename(self.localpath)
@@ -96,12 +96,16 @@ def demo():
 		file = request.files['file']
 		if '.kmz' in file.filename:
 			filename = secure_filename(file.filename)
-			os.mkdir('tmp')
+			try:
+				os.mkdir('tmp')
+			except:
+				pass
 			filepath = 'tmp/'+filename
 			file.save(filepath)
 			description = request.form['description']
 
 			model = ThreeDeeModel(filename,description,filepath)
+			model.open_model()
 			model.get_lat_lon_from_model()
 			model.upload_to_s3()
 

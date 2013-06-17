@@ -9,7 +9,6 @@ flask-heroku==0.1.4
 gunicorn==0.17.4
 lxml==3.2.1
 psycopg2==2.5
-pykml==0.1.0
 requests==1.2.3
 six==1.3.0
 wsgiref==0.1.2
