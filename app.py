@@ -1,16 +1,71 @@
-import os, json, boto, requests, zipfile
+import os, json, boto, requests, zipfile, re, pdb
+from boto.s3.key import Key
 from flask import Flask, flash, request, render_template, url_for, redirect, make_response, send_from_directory, flash
 from werkzeug import secure_filename
+
 from flask.ext.heroku import Heroku
+from flask.ext.sqlalchemy import SQLAlchemy
 from pykml import parser
+
+#----------------------------------------
+# initialization
+#----------------------------------------
 
 app = Flask(__name__)
 heroku = Heroku(app)
-app.config['DEBUG'] = True
+db = SQLAlchemy(app)
+
+app.config.update(
+    DEBUG = True,
+    SQLALCHEMY_DATABASE_URI = 'postgres://hackyourcity@localhost/planit'
+)
 
 app.config.setdefault('AWS_ACCESS_KEY_ID', os.environ.get('AWS_ACCESS_KEY_ID'))
 app.config.setdefault('AWS_SECRET_ACCESS_KEY', os.environ.get('AWS_SECRET_ACCESS_KEY'))
 app.config.setdefault('S3_BUCKET_NAME', os.environ.get('S3_BUCKET_NAME'))
+
+
+#----------------------------------------
+# models
+#----------------------------------------
+
+class ThreeDeeModel(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.Unicode, unique=True)
+	description = db.Column(db.Unicode)
+	localpath = db.Column(db.Unicode)
+	latitude = db.Column(db.Unicode)
+	longitude = db.Column(db.Unicode)
+	s3_url = db.Column(db.Unicode)
+
+	def __init__(self, name, description, localpath):
+		self.name = name
+		self.description = description
+		self.localpath = localpath
+
+	def open_model(self):
+		z = zipfile.ZipFile(self.localpath)
+		z.extractall()
+
+	def get_lat_lon_from_model(self):
+		kml = open('static/models/doc.kml','r').read()
+		match = re.search('<latitude>(.*)</latitude>', kml)
+		self.latitude = match.group(1)
+		match = re.search('<longitude>(.*)</longitude>', kml)
+		self.longitude = match.group(1)
+
+	def upload_to_s3(self):
+		conn = boto.connect_s3()
+		mybucket = conn.get_bucket('planit-impact-models') # Substitute in your own bucket name
+		k = Key(mybucket)
+		k.key = self.name
+		k.set_contents_from_filename(self.localpath)
+		conn.close()
+		self.s3_url = 'https://s3.amazonaws.com/planit-impact-models/'+self.name
+
+#----------------------------------------
+# controllers
+#----------------------------------------
 
 @app.route("/")
 @app.route("/index")
@@ -42,76 +97,25 @@ def demo():
 			filename = secure_filename(file.filename)
 			filepath = 'static/models/'+filename
 			file.save(filepath)
-			flash(filename)
-			get_model_data(filename)
+			description = request.form['description']
+
+			model = ThreeDeeModel(filename,description,filepath)
+			model.get_lat_lon_from_model()
+			model.upload_to_s3()
+
+			db.session.add(model)
+			db.session.commit()
 		else:	 
-			flash('Only kmz files allowed.')
-		return render_template('demo.html')
-		
-	model_names = []
-	conn = boto.connect_s3()
-	mybucket = conn.get_bucket('planit-impact-models') # Substitute in your own bucket name
-	file_list = mybucket.list()
-	conn.close()
-	for file_path in file_list:
-		model_names.append(file_path.name)
-	return render_template('demo.html', model_names = model_names)
-
-
-# @app.route('/uploads/<filename>')
-# def uploaded_file(filename):
-#     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)                        
-
-	# import upload_s3
-
-# 	AWS_ACCESS_KEY_ID = app.config['AWS_ACCESS_KEY_ID']
-# 	AWS_SECRET_ACCESS_KEY = app.config['AWS_SECRET_ACCESS_KEY']
-# 	theBucket = app.config['S3_BUCKET_NAME']
+			flash('Only kmz files allowed.') # Still needs a template to make use of this.
 	
-# 	theParameters = upload_s3.upload_to_s3(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,theBucket)
+	all_models = ThreeDeeModel.query.all()
 
-# 	# Download existing models
-# 	model_names = []
-# 	conn = boto.connect_s3()
-# 	mybucket = conn.get_bucket('planit-impact-models') # Substitute in your bucket name
-# 	file_list = mybucket.list()
-# 	for file_path in file_list:
-# 		model_names.append(file_path.name)
+	return render_template('demo.html', all_models=all_models)
 
-# 	return render_template('demo', model_names=model_names, **theParameters)
-
-# @app.route('/project/<model_name>')
-# def project(model_name):
-
-# 	#Download model
-# 	r = requests.get('https://s3.amazonaws.com/planit-impact-models/'+model_name)
-# 	with open('static/models/'+model_name, "wb") as new_model:
-# 	    new_model.write(r.content)
-
-# 	# Get the lat and lon from the model.
-# 	import zipfile
-# 	z = zipfile.ZipFile('static/models/'+model_name)
-# 	z.extractall('static/models/')
-# 	from pykml import parser
-# 	with open('static/models/doc.kml') as f:
-# 		doc = parser.parse(f)
-
-# 	root = doc.getroot()
-# 	lat = root.Placemark.Model.Location.latitude
-# 	lon = root.Placemark.Model.Location.longitude
-# 	import pdb
-# 	pdb.set_trace()
-
-# 	return render_template('project.html', model_name=model_name, lat=lat, lon=lon)
-
-
-# def get_lat_lon(model_name):
-
-
-
-@app.route("/project/<model_name>/report/explore")
+@app.route("/<model_name>/report/explore")
 def report(model_name):
-    return render_template('explore.html', model_name=model_name)
+	model = ThreeDeeModel.query.filter_by(name=model_name).first()
+	return render_template('explore.html', model=model)
 
 if __name__ == "__main__":
     app.run()

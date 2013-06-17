@@ -29,31 +29,42 @@
 
 {% block main %}
 
-		<div class="container">
-		
-			<div class="row">
-				<h1 class="title span6">Demo</h1>
+	<div id="header">
+	  <div class="container">  
+	    <div class="row">
+		  <div class="span12">
+		    <h1>About PlanIT Impact</h1>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="span4">
+				<form action="{{ url_for('demo') }}" method="post" enctype="multipart/form-data">
+				  <fieldset>
+				  	<legend>Upload a 3d model.</legend>
+				    <input type="file" name="file">
+				    <input type="text" name="description">
+					<input type="submit" value="Upload your selected file" class="btn"> 
+				  </fieldset>
+				</form>
 			</div>
-			<div class="row">
-				<div class="span4">
-					<form action="{{ url_for('demo') }}" method="post" enctype="multipart/form-data">
-					  <fieldset>
-					    <label>Choose a file to upload.</label>
-					    <input type="file" name="file">
-						<input type="submit" value="Upload your selected file" class="btn"> 
-					  </fieldset>
-					</form>
-				</div>
-				<div class="span4">
-					Or choose an existing project.
-					<ol>
-					{% for model_name in model_names %}
-					    <li><a href="project/{{ model_name }}">{{ model_name }}</a></li>
-					{% endfor %}
-					</ol>
-				</div>
+			<div class="offset5">
+				<h3>Or choose an existing project.</h3>
+				<ol>
+				{% for model in all_models %}
+				    <li>
+				    	<h3>{{ model.name }}</h3>
+				    	<p>{{model.description}}</p>
+				    	<a href="/{{ model.name }}/report/explore" class="btn btn-primary btn-action">Run Report</a>
+				    </li>
+				{% endfor %}
+				</ol>
 			</div>
 		</div>
+	</div>
 {% endblock %}
 
 {% block js_footer %}
