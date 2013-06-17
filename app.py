@@ -49,7 +49,7 @@ class ThreeDeeModel(db.Model):
 		z.extractall()
 
 	def get_lat_lon_from_model(self):
-		kml = open('/tmp/doc.kml','r').read()
+		kml = open('tmp/doc.kml','r').read()
 		match = re.search('<latitude>(.*)</latitude>', kml)
 		self.latitude = match.group(1)
 		match = re.search('<longitude>(.*)</longitude>', kml)
