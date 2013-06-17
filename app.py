@@ -96,6 +96,7 @@ def demo():
 		file = request.files['file']
 		if '.kmz' in file.filename:
 			filename = secure_filename(file.filename)
+			os.mkdir('tmp')
 			filepath = 'tmp/'+filename
 			file.save(filepath)
 			description = request.form['description']
