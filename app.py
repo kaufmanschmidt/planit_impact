@@ -43,13 +43,24 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode)
     description = db.Column(db.Unicode)
+    s3_url = db.Column(db.Unicode)
+    settings_json = db.Column(db.Unicode)
+
+    def upload_to_s3(self, name, localpath):
+        conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+        mybucket = conn.get_bucket(S3_BUCKET_NAME)
+        k = Key(mybucket)
+        k.key = name
+        k.set_contents_from_filename(localpath)
+        conn.close()
+        self.s3_url = 'https://s3.amazonaws.com/%s/'% S3_BUCKET_NAME + self.name
 
 
 class ThreeDeeModel(db.Model):
     __tablename__ = 'three_dee_model'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Unicode, unique=True)
+    name = db.Column(db.Unicode)
     description = db.Column(db.Unicode)
     localpath = db.Column(db.Unicode)
     latitude = db.Column(db.Unicode)
@@ -164,6 +175,27 @@ def report(model_name):
 def project(model_name):
     model = Project.query.filter_by(name=model_name).first()
     return render_template('project.html', model=model)
+
+@app.route("/<model_name>/kmz", methods=['GET', 'POST'])
+def project_kmz(model_name):
+    model = Project.query.filter_by(name=model_name).first()
+
+    if request.method == 'POST':
+        kmz_file = request.files['file']
+        if '.kmz' in kmz_file.filename:
+            filename = secure_filename(kmz_file.filename)
+            try:
+                os.mkdir('tmp')
+            except Exception as e:
+                pass
+            filepath = 'tmp/'+filename
+            kmz_file.save(filepath)
+
+            model.upload_to_s3(filename, filepath)
+            db.session.add(model)
+            db.session.commit()
+
+    return ''
 
 
 if __name__ == "__main__":

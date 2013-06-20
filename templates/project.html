@@ -15,10 +15,10 @@
           <a class="brand" href="../index.html">PlanIT Impact</a>
 	      <div class="nav-collapse collapse">
 	        <ul class="nav pull-right animated">
-		        <li><a href="#">Home </a></li>
-		        <li><a href="about">About</a></li>
-		        <li><a href="features">Features</a></li>
-		        <li><a href="howitworks">How it Works</a></li>
+		        <li><a href="/">Home </a></li>
+		        <li><a href="/about">About</a></li>
+		        <li><a href="/features">Features</a></li>
+		        <li><a href="/howitworks">How it Works</a></li>
 		        <li class="active"><a href="/demo">Demo</a></li>
 	        </ul>
 	      </div>
@@ -29,16 +29,67 @@
 
 {% block main %}
 
-		<div class="container">
-		
-			<div class="row">
-				<h1 class="title span6">{{ model_name }}</h1>
-				<h3>{{lat}}, {{lon}}</h3>
-				<p><a href="{{ model_name }}/report/explore" class="btn btn-primary btn-action">Run Report</a></p>
-			</div>
-			
-		</div>
+        <div class="container">
+
+            <div class="row">
+                <div class="title span9">
+                    <div class="no_kml">
+                        <form id="dropzone" action="kmz">
+                        </form>
+                    </div>
+                </div>
+                <div class="span3">
+                    <h2>Instructions</h2>
+                    <p>We need to gather some information about your project in order to generate a report. The report will only include sections you fill out entirely, and the data used will be saved in your dashboard for future reference. Some data will be pulled from your KML file.</p>
+                </div>
+            </div>
+
+            <h2>Project Information</h2>
+
+            <form class="form">
+                <fieldset>
+
+                    <div class="row">
+                        <div class="span4">
+                            <legend>KMZ model settings</legend>
+                            <input type="file" name="file"><br/>
+                        </div>
+
+                        <div class="span4">
+                            <legend>Storm water settings</legend>
+                            <label>Lawn factor</label>
+                            <input name="c1"><br/>
+                            <label>Impervious surface factor</label>
+                            <input name="c2"><br/>
+                            <label>Green roof factor</label>
+                            <input name="c6"><br/>
+
+                        </div>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary btn-action" value="Save"/>
+                    <input type="submit" class="btn btn-primary btn-action" value="Run Report"/>
+
+                </fieldset>
+            </form>
+
 {% endblock %}
 
 {% block js_footer %}
+    <script>
+        window.onload = (function() {
+            var dropzone = new Dropzone('#dropzone', {
+                url: './kmz',
+                accept: function(file, done) {
+                    done();
+                },
+                success: function() {
+                    window.location.href = window.location.href;
+                },
+                error: function() {
+                    alert('upload failed');
+                }
+            })
+        });
+    </script>
 {% endblock %}
