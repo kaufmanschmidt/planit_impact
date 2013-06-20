@@ -7,3 +7,9 @@ create table three_dee_model(
   longitude varchar(255),
   s3_url varchar(255)
 );
+
+create table project(
+  id serial primary key,
+  name varchar(255),
+  description text
+);
