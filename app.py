@@ -53,7 +53,7 @@ class Project(db.Model):
         k.key = name
         k.set_contents_from_filename(localpath)
         conn.close()
-        self.s3_url = 'https://s3.amazonaws.com/%s/'% S3_BUCKET_NAME + self.name
+        self.s3_url = 'https://s3.amazonaws.com/%s/'% S3_BUCKET_NAME + name
 
 
 class ThreeDeeModel(db.Model):
@@ -171,29 +171,62 @@ def report(model_name):
     model = ThreeDeeModel.query.filter_by(name=model_name).first()
     return render_template('explore.html', model=model)
 
-@app.route("/<model_name>/")
+def float_or_zero(int_str):
+    try:
+        return float(int_str) or 0
+    except:
+        return 0
+
+@app.route("/<model_name>/", methods=['GET', 'POST'])
 def project(model_name):
     model = Project.query.filter_by(name=model_name).first()
-    return render_template('project.html', model=model)
+
+    if request.method == 'POST':
+        kmz_file = request.files.get('file')
+        if kmz_file:
+            save_kmz(model, kmz_file)
+
+        c1 = float_or_zero(request.form.get('c1'))
+        c2 = float_or_zero(request.form.get('c2'))
+        c6 = float_or_zero(request.form.get('c6'))
+
+        model.settings_json = json.dumps({
+            'c1': c1,
+            'c2': c2,
+            'c6': c6
+        })
+
+        db.session.add(model)
+        db.session.commit()
+
+    try:
+        settings_json = json.loads(model.settings_json)
+    except:
+        settings_json = {}
+
+    return render_template('project.html', model=model, settings=settings_json)
+
+def save_kmz(model, kmz_file):
+    if '.kmz' in kmz_file.filename:
+        filename = secure_filename(kmz_file.filename)
+        try:
+            os.mkdir('tmp')
+        except Exception as e:
+            pass
+        filepath = 'tmp/'+filename
+        kmz_file.save(filepath)
+
+        model.upload_to_s3(filename, filepath)
+        db.session.add(model)
+        db.session.commit()
+
 
 @app.route("/<model_name>/kmz", methods=['GET', 'POST'])
 def project_kmz(model_name):
     model = Project.query.filter_by(name=model_name).first()
 
     if request.method == 'POST':
-        kmz_file = request.files['file']
-        if '.kmz' in kmz_file.filename:
-            filename = secure_filename(kmz_file.filename)
-            try:
-                os.mkdir('tmp')
-            except Exception as e:
-                pass
-            filepath = 'tmp/'+filename
-            kmz_file.save(filepath)
-
-            model.upload_to_s3(filename, filepath)
-            db.session.add(model)
-            db.session.commit()
+        save_kmz(model, request.files['file'])
 
     return ''
 
