@@ -19,7 +19,8 @@ except:
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME') or 'planit-impact-models'
-    SQLALCHEMY_DATABASE_URI = 'postgres://hackyourcity@localhost/planit'
+    # Uncomment for local development
+    # SQLALCHEMY_DATABASE_URI = 'postgres://hackyourcity@localhost/planit'
 
 #----------------------------------------
 # initialization
@@ -32,7 +33,7 @@ db = SQLAlchemy(app)
 app.config.update(
     DEBUG = True,
     # For local development, uncomment and put in your own user name
-    SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI
+    # SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI
 )
 
 # Might not need these anymore? What config key does boto use?
