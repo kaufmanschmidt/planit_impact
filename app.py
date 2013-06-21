@@ -6,6 +6,10 @@ from werkzeug import secure_filename
 from flask.ext.heroku import Heroku
 from flask.ext.sqlalchemy import SQLAlchemy
 
+from xml.etree import ElementTree
+from StringIO import StringIO
+
+PROJECT_DIR = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
 
 try:
     from setup_local import *
@@ -161,7 +165,11 @@ def report(model_id):
 
 def float_or_zero(int_str):
     try:
-        return float(int_str) or 0
+        flt = float(int_str) or 0
+        flt = max(flt, 0)
+        flt = min(flt, 1)
+
+        return flt
     except:
         return 0
 
@@ -176,11 +184,17 @@ def project(model_id):
 
         c1 = float_or_zero(request.form.get('c1'))
         c2 = float_or_zero(request.form.get('c2'))
+        c3 = float_or_zero(request.form.get('c3'))
+        c4 = float_or_zero(request.form.get('c4'))
+        c5 = float_or_zero(request.form.get('c5'))
         c6 = float_or_zero(request.form.get('c6'))
 
         model.settings_json = json.dumps({
             'c1': c1,
             'c2': c2,
+            'c3': c3,
+            'c4': c4,
+            'c5': c5,
             'c6': c6
         })
 
@@ -193,7 +207,7 @@ def project(model_id):
     try:
         settings_json = json.loads(model.settings_json)
     except:
-        settings_json = {}
+        settings_json = { 'c1': 0.3, 'c2': 0.9, 'c3': 0.1, 'c4': 0.5, 'c5': 0.15, 'c6': 0.75 }
 
     return render_template('project.html', model=model, settings=settings_json)
 
@@ -210,6 +224,38 @@ def save_kmz(model, kmz_file):
         model.upload_to_s3(filename, filepath)
         db.session.add(model)
         db.session.commit()
+
+@app.route("/projects/<model_id>/overlays/storm_water")
+def project_overlay(model_id):
+    model = Project.query.filter_by(id=model_id).first()
+
+    try:
+        params = json.loads(model.settings_json)
+    except:
+        params = {}
+
+    path = os.path.abspath(os.path.join(PROJECT_DIR, 'static/models/overlay.kml'))
+
+    tree = ElementTree.parse(path)
+    root = tree.getroot()
+
+    for placemark in root.iter('{http://www.opengis.net/kml/2.2}Placemark'):
+        c = placemark.get('class')
+        sub_value = params.get(c)
+
+        if sub_value:
+            color = placemark.find('./{http://www.opengis.net/kml/2.2}Style/{http://www.opengis.net/kml/2.2}PolyStyle/{http://www.opengis.net/kml/2.2}color')
+            if color is not None:
+                sub_value = 256 * (1 - sub_value)
+                sub_value = min(sub_value, 255)
+                sub_value = max(sub_value, 0)
+                color.text = 'ff00%02xff' % sub_value
+
+    overlay = StringIO()
+    tree.write(overlay)
+    overlay.seek(0)
+
+    return Response(overlay)
 
 
 @app.route("/projects/<model_id>/kmz_upload", methods=['POST'])

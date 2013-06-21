@@ -22,74 +22,70 @@
         var building = null;
         var stormWater = null;
 
+        var look_at = function() {
+            var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+            // hard code values
+            lookAt.setLatitude(39.08969646201485);
+            lookAt.setLongitude(-94.58089747657677);
+            lookAt.setAltitude(0);
+            lookAt.setTilt(70);
+            lookAt.setRange(230);
+            lookAt.setHeading(70);
+
+            ge.getOptions().setFlyToSpeed(0.3);
+            // Update the view in Google Earth.
+            ge.getView().setAbstractView(lookAt);
+        };
+
         var showExplore = function() {
-            if (building) return;
             if (stormWater) {
-                ge.getFeatures().removeChild(storm_water);
-                stormWater = null;
+                ge.getFeatures().removeChild(stormWater);
             }
 
-            google.earth.fetchKml(ge, model_href, function(kmlObject) {
-                if (kmlObject) {
-                    building = kmlObject;
-                    ge.getFeatures().appendChild(kmlObject);
+            if (building) {
+                look_at();
+                ge.getFeatures().removeChild(building);
+                ge.getFeatures().appendChild(building);
+            }
+            else {
+                google.earth.fetchKml(ge, model_href, function(kmlObject) {
+                    if (kmlObject) {
+                        building = kmlObject;
+                        ge.getFeatures().appendChild(building);
+                        look_at();
+                    }
+                });
+            }
 
-                    var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
-                    // hard code values
-                    lookAt.setLatitude(39.08969646201485);
-                    lookAt.setLongitude(-94.58089747657677);
-                    lookAt.setAltitude(0);
-                    lookAt.setTilt(70);
-                    lookAt.setRange(230);
-                    lookAt.setHeading(70);
-
-                    ge.getOptions().setFlyToSpeed(0.3);
-                    // Update the view in Google Earth.
-                    ge.getView().setAbstractView(lookAt);
-                }
-            });
         };
 
         var showStormWater = function() {
-            if (stormWater) return;
-
             if (building) {
                 ge.getFeatures().removeChild(building);
-                building = null;
             }
 
-            $.ajax({
-                url: '{{ url_for('static', filename='models/overlay.kml') }}',
-                type: 'GET',
-                success: function(data) {
-
-                    var kmlObject = ge.parseKml(data);
-
-                    if (kmlObject) {
-                        stormWater = kmlObject;
-                        ge.getFeatures().appendChild(kmlObject);
-
-                        var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
-                        // hard code values
-                        lookAt.setLatitude(39.08969646201485);
-                        lookAt.setLongitude(-94.58089747657677);
-                        lookAt.setAltitude(0);
-                        lookAt.setTilt(70);
-                        lookAt.setRange(230);
-                        lookAt.setHeading(70);
-
-                        ge.getOptions().setFlyToSpeed(0.3);
-                        // Update the view in Google Earth.
-                        ge.getView().setAbstractView(lookAt);
+            if (stormWater) {
+                look_at();
+                ge.getFeatures().removeChild(stormWater);
+                ge.getFeatures().appendChild(stormWater);
+            }
+            else {
+                $.ajax({
+                    url: '/projects/{{ model.id }}/overlays/storm_water',
+                    type: 'GET',
+                    success: function(data) {
+                        var kmlObject = ge.parseKml(data);
+                        if (kmlObject) {
+                            stormWater = kmlObject;
+                            ge.getFeatures().appendChild(stormWater);
+                            look_at();
+                        }
+                    },
+                    error: function() {
+                        alert('Can\'t load overlay');
                     }
-
-                },
-                error: function() {
-                    alert('Can\'t load overlay');
-                }
-            });
-
-
+                });
+            }
         };
 
         var initCallback = function(object) {
