@@ -2,44 +2,57 @@
 
 {% block head_js %}
 <script type="text/javascript" src="https://www.google.com/jsapi"> </script>
-	<script type="text/javascript">
+<script type="text/javascript">google.load("earth", "1");</script>
 
-		var ge;
-		google.load("earth", "1");
+<script type="text/javascript">
+    $(function() {
+        var model_href = '{{ model.kmz_url }}';
+        if (model_href === '')
+            return;
 
-		function init() {
-		  google.earth.createInstance("map3d", initCallback, failureCallback);
-		}
+        var ge;
 
-		function initCallback(object) {
-			ge = object;
-			ge.getWindow().setVisibility(true);
-			ge.getOptions().setStatusBarVisibility(true);
-			ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
-			ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, false);
-			ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, false);
-			ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
-			ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
+        var init = function() {
+            google.earth.createInstance("map3d", initCallback, failureCallback);
+        };
 
-			// Trying a network link instead
-			var link = ge.createLink('');
-			var href = 'https://s3.amazonaws.com/planit-impact-models/{{model.name}}';
-			link.setHref(href);
+        var initCallback = function(object) {
+            ge = object;
+            ge.getWindow().setVisibility(true);
+            ge.getOptions().setStatusBarVisibility(true);
+            ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
+            ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, false);
+            ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, false);
+            ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
+            ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
 
-			var networkLink = ge.createNetworkLink('');
-			networkLink.set(link, true, true); // Sets the link, refreshVisibility, and flyToView
+            google.earth.fetchKml(ge, model_href, function(kmlObject) {
+                if (kmlObject) {
+                    ge.getFeatures().appendChild(kmlObject);
 
-			ge.getFeatures().appendChild(networkLink);
+                    var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+                    // hard code values
+                    lookAt.setLatitude(39.08969646201485);
+                    lookAt.setLongitude(-94.58089747657677);
+                    lookAt.setAltitude(0);
+                    lookAt.setTilt(70);
+                    lookAt.setRange(230);
+                    lookAt.setHeading(70);
 
-			// You can use model.latitude and model.longitude to set the viewpoint to something closer.
-		}
+                    ge.getOptions().setFlyToSpeed(0.3);
+                    // Update the view in Google Earth.
+                    ge.getView().setAbstractView(lookAt);
+                }
+            });
+        };
 
-	    function failureCallback(object) {
-	      alert('Didn\'t work!');
-	    }
+        var failureCallback = function failureCallback(object) {
+          alert('Didn\'t work!');
+        };
 
-	    google.setOnLoadCallback(init);
-	</script>
+        google.setOnLoadCallback(init);
+    });
+</script>
 {% endblock %}
 
 {% block header %}

@@ -42,6 +42,10 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
+# IDE generated files #
+#######################
+.idea
+
 # Settings           #
 ######################
 setup_local.py

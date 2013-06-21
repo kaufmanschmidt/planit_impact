@@ -1,6 +1,6 @@
 import os, json, boto, zipfile, re, pdb
 from boto.s3.key import Key
-from flask import Flask, flash, request, render_template, Response
+from flask import Flask, redirect, request, render_template, Response
 from werkzeug import secure_filename
 
 from flask.ext.heroku import Heroku
@@ -72,12 +72,7 @@ class Project(db.Model):
 
     @property
     def kmz_url(self):
-        if not BUCKET_STREAM:
-            return self.s3_url
-        else:
-            if not self.s3_url:
-                return ''
-            return '%s/kmz' % self.name
+        return self.s3_url
 
 
 class ThreeDeeModel(db.Model):
@@ -145,7 +140,6 @@ def howitworks():
     return render_template('howitworks.html')
 
 @app.route("/demo", methods=['GET', 'POST'])
-@app.route("/demo.html", methods=['GET', 'POST'])
 def demo():
     if request.method == 'POST':
         model = Project()
@@ -159,41 +153,11 @@ def demo():
 
     return render_template('demo_projects.html', all_projects=all_projects)
 
-@app.route("/demo_old", methods=['GET', 'POST'])
-@app.route("/demo_old.html", methods=['GET', 'POST'])
-def demo_old():
-    if request.method == 'POST':
-        file = request.files['file']
-        if '.kmz' in file.filename:
-            filename = secure_filename(file.filename)
-            try:
-                os.mkdir('tmp')
-            except Exception as e:
-                pass
-            filepath = 'tmp/'+filename
-            file.save(filepath)
-            description = request.form['description']
-
-            model = ThreeDeeModel(filename,description,filepath)
-            model.open_model()
-            model.get_lat_lon_from_model()
-            model.upload_to_s3()
-
-            db.session.add(model)
-            db.session.commit()
-        else:
-            flash('Only kmz files allowed.') # Still needs a template to make use of this.
-
-    all_models = ThreeDeeModel.query.all()
-
-    return render_template('demo.html', all_models=all_models)
-
-
-
-@app.route("/<model_name>/report/explore")
-def report(model_name):
-    model = ThreeDeeModel.query.filter_by(name=model_name).first()
+@app.route("/projects/<model_id>/report")
+def report(model_id):
+    model = Project.query.filter_by(id=model_id).first()
     return render_template('explore.html', model=model)
+
 
 def float_or_zero(int_str):
     try:
@@ -201,9 +165,9 @@ def float_or_zero(int_str):
     except:
         return 0
 
-@app.route("/<model_name>/", methods=['GET', 'POST'])
-def project(model_name):
-    model = Project.query.filter_by(name=model_name).first()
+@app.route("/projects/<model_id>/", methods=['GET', 'POST'])
+def project(model_id):
+    model = Project.query.filter_by(id=model_id).first()
 
     if request.method == 'POST':
         kmz_file = request.files.get('file')
@@ -222,6 +186,9 @@ def project(model_name):
 
         db.session.add(model)
         db.session.commit()
+
+        if request.form.get('report_action'):
+            return redirect('/projects/%s/report' % model.id)
 
     try:
         settings_json = json.loads(model.settings_json)
@@ -245,19 +212,14 @@ def save_kmz(model, kmz_file):
         db.session.commit()
 
 
-@app.route("/<model_name>/kmz_upload", methods=['POST'])
-def project_kmz_upload(model_name):
-    model = Project.query.filter_by(name=model_name).first()
+@app.route("/projects/<model_id>/kmz_upload", methods=['POST'])
+def project_kmz_upload(model_id):
+    model = Project.query.filter_by(id=model_id).first()
 
     if request.method == 'POST':
         save_kmz(model, request.files['file'])
 
     return ''
-
-@app.route("/<model_name>/kmz", methods=['GET'])
-def project_kmz(model_name):
-    model = Project.query.filter_by(name=model_name).first()
-    return Response(model.download_from_s3())
 
 if __name__ == "__main__":
     app.run()

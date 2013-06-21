@@ -70,8 +70,8 @@
                         </div>
                     </div>
 
-                    <input type="submit" class="btn btn-primary btn-action" value="Save"/>
-                    <input type="submit" class="btn btn-primary btn-action" value="Run Report"/>
+                    <input type="submit" class="btn btn-primary btn-action" name="save_action" value="Save"/>
+                    <input type="submit" class="btn btn-primary btn-action" name="report_action" value="Run Report"/>
 
                 </fieldset>
             </form>
@@ -108,8 +108,6 @@
             })
         });
 
-        ge = null;
-
         $(function() {
             var model_href = '{{ model.kmz_url }}';
             if (model_href === '')
@@ -117,8 +115,7 @@
 
             $('.kml').append($('<div id="map3d"></div>'));
 
-            ge;
-
+            var ge;
 
             var init = function() {
                 google.earth.createInstance("map3d", initCallback, failureCallback);
@@ -134,8 +131,6 @@
                 //ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
                 //ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
 
-
-
                 google.earth.fetchKml(ge, model_href, function(kmlObject) {
                     if (kmlObject) {
                         ge.getFeatures().appendChild(kmlObject);
@@ -150,15 +145,10 @@
                         lookAt.setHeading(70);
 
                         ge.getOptions().setFlyToSpeed(ge.SPEED_TELEPORT);
-
                         // Update the view in Google Earth.
                         ge.getView().setAbstractView(lookAt);
                     }
                 });
-
-
-
-                // You can use model.latitude and model.longitude to set the viewpoint to something closer.
             };
 
             var failureCallback = function failureCallback(object) {
