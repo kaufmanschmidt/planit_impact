@@ -150,6 +150,10 @@
 		<div class="row">
 			<h1 class="title span6">{{model.name}}</h1>
             <div class="span6 share-buttons">
+                <a href="/static/models/report.csv" class="btn btn-primary btn-large pull-right">
+                        Export CSV
+                </a>
+
                 <div class="btn-group pull-right">
                     <a href="#" class="btn btn-primary btn-large dropdown-toggle" data-toggle='dropdown'>
                         ← Share
@@ -208,6 +212,16 @@
 		</div>
 	</div><!--/container-->
 </div>
+
+
+    <script>
+
+        $(function(){
+            console.log(document.location.href);
+            $('#share-area').val(document.location.href);
+        });
+
+    </script>
 
 {% endblock %}
 

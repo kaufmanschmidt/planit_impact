@@ -7,6 +7,9 @@
 .share-buttons{
     margin-bottom: 20px;
 }
+.share-buttons a{
+    margin: 10px;
+}
 .share-buttons textarea{
     height: 100%;
     margin: 5px;
