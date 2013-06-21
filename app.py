@@ -246,10 +246,17 @@ def project_overlay(model_id):
         if sub_value:
             color = placemark.find('./{http://www.opengis.net/kml/2.2}Style/{http://www.opengis.net/kml/2.2}PolyStyle/{http://www.opengis.net/kml/2.2}color')
             if color is not None:
-                sub_value = 256 * (1 - sub_value)
-                sub_value = min(sub_value, 255)
-                sub_value = max(sub_value, 0)
-                color.text = 'ff00%02xff' % sub_value
+                if sub_value < 0.5:
+                    sub_value = 256 * (1 - sub_value * 2)
+                    sub_value = min(sub_value, 255)
+                    sub_value = max(sub_value, 0)
+
+                    color.text = 'ff00ff%02x' % sub_value
+                else:
+                    sub_value = 256 * (1 - (1 - sub_value) * 2)
+                    sub_value = min(sub_value, 255)
+                    sub_value = max(sub_value, 0)
+                    color.text = 'ff00%02xff' % sub_value
 
     overlay = StringIO()
     tree.write(overlay)
