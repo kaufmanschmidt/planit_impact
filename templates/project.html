@@ -60,13 +60,16 @@
 
                         <div class="span4">
                             <legend>Storm water settings</legend>
-                            <label>Lawn factor</label>
-                            <input name="c1" value="{{ settings.c1 }}"/><br/>
+                            <label>Garden factor</label>
+                            <input name="c5" value="{{ settings.c5 }}"/><br/>
                             <label>Impervious surface factor</label>
                             <input name="c2" value="{{ settings.c2 }}"/><br/>
                             <label>Green roof factor</label>
                             <input name="c6" value="{{ settings.c6 }}"/><br/>
-
+                            <label>Wood factor</label>
+                            <input name="c3" value="{{ settings.c3 }}"/><br/>
+                            <label>Pavement factor</label>
+                            <input name="c4" value="{{ settings.c4 }}"/><br/>
                         </div>
                     </div>
 
@@ -109,7 +112,7 @@
         });
 
         $(function() {
-            var model_href = '{{ model.kmz_url }}';
+            var model_href = '{{ model.kmz_url or "" }}';
             if (model_href === '')
                 return;
 

@@ -285,8 +285,9 @@ hr.thick {
 /* Main Content
 -------------------------------------------------- */
 #content {
-	padding: 30px 0;
-	border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 30px 0;
+    border-top: 1px solid #ddd;
+
 }
 .icon_wrapper {
     display: block;
@@ -602,4 +603,8 @@ ul.plans {
 
     background: #5eb95e;
     background-image: linear-gradient(to bottom, #62c462, #57a957);
+}
+
+ul.nav-tabs {
+    margin-right: 0 !important;
 }

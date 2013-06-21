@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block head_js %}
+
+<link href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet">
+
 <script type="text/javascript" src="https://www.google.com/jsapi"> </script>
 <script type="text/javascript">google.load("earth", "1");</script>
 
@@ -16,6 +19,75 @@
             google.earth.createInstance("map3d", initCallback, failureCallback);
         };
 
+        var building = null;
+        var stormWater = null;
+
+        var look_at = function(tilt) {
+            var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+            // hard code values
+            lookAt.setLatitude(39.08969646201485);
+            lookAt.setLongitude(-94.58089747657677);
+            lookAt.setAltitude(0);
+            lookAt.setTilt(tilt || 70);
+            lookAt.setRange(230);
+            lookAt.setHeading(70);
+
+            ge.getOptions().setFlyToSpeed(0.3);
+            // Update the view in Google Earth.
+            ge.getView().setAbstractView(lookAt);
+        };
+
+        var showExplore = function() {
+            if (stormWater) {
+                ge.getFeatures().removeChild(stormWater);
+            }
+
+            if (building) {
+                look_at();
+                ge.getFeatures().removeChild(building);
+                ge.getFeatures().appendChild(building);
+            }
+            else {
+                google.earth.fetchKml(ge, model_href, function(kmlObject) {
+                    if (kmlObject) {
+                        building = kmlObject;
+                        ge.getFeatures().appendChild(building);
+                        look_at();
+                    }
+                });
+            }
+
+        };
+
+        var showStormWater = function() {
+            if (building) {
+                ge.getFeatures().removeChild(building);
+            }
+
+            if (stormWater) {
+                look_at(30);
+                ge.getFeatures().removeChild(stormWater);
+                ge.getFeatures().appendChild(stormWater);
+            }
+            else {
+                $.ajax({
+                    url: '/projects/{{ model.id }}/overlays/storm_water',
+                    type: 'GET',
+                    success: function(data) {
+                        var kmlObject = ge.parseKml(data);
+                        if (kmlObject) {
+                            stormWater = kmlObject;
+                            ge.getFeatures().appendChild(stormWater);
+                            look_at(30);
+                        }
+                    },
+                    error: function() {
+                        alert('Can\'t load overlay');
+                    }
+                });
+            }
+        };
+
         var initCallback = function(object) {
             ge = object;
             ge.getWindow().setVisibility(true);
@@ -26,24 +98,7 @@
             ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
             ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
 
-            google.earth.fetchKml(ge, model_href, function(kmlObject) {
-                if (kmlObject) {
-                    ge.getFeatures().appendChild(kmlObject);
-
-                    var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
-                    // hard code values
-                    lookAt.setLatitude(39.08969646201485);
-                    lookAt.setLongitude(-94.58089747657677);
-                    lookAt.setAltitude(0);
-                    lookAt.setTilt(70);
-                    lookAt.setRange(230);
-                    lookAt.setHeading(70);
-
-                    ge.getOptions().setFlyToSpeed(0.3);
-                    // Update the view in Google Earth.
-                    ge.getView().setAbstractView(lookAt);
-                }
-            });
+            showExplore();
         };
 
         var failureCallback = function failureCallback(object) {
@@ -51,7 +106,18 @@
         };
 
         google.setOnLoadCallback(init);
+
+        $('a[data-report=explore]').click(function() {
+            showExplore();
+        });
+
+        $('a[data-report=storm_water]').click(function() {
+            showStormWater();
+        });
     });
+
+
+
 </script>
 {% endblock %}
 
@@ -96,44 +162,36 @@
 		</div>
 		<div class="row">	
 			<!-- start: Main Menu -->
-			<div id="sidebar-left" class="span1">
-				<div class="nav-collapse sidebar-nav tabbable">
-					<ul class="nav nav-tabs nav-stacked main-menu">
-						<li class="active"><a href="#" data-toggle="tab"><i class="fa-icon-globe"></i><span class="hidden-tablet"> Explore</span></a></li>	
-						<li><a href="#" data-toggle="tab"><i class="fa-icon-tint"></i><span class="hidden-tablet"> Water Usage</span></a></li>
-						<li><a href="#" data-toggle="tab"><i class="fa-icon-cloud"></i><span class="hidden-tablet"> Storm Water</span></a></li>
-						<li><a href="#" data-toggle="tab"><i class="fa-icon-bolt"></i><span class="hidden-tablet"> Energy Usage</span></a></li>
-						<li><a href="#" data-toggle="tab"><i class="fa-icon-leaf"></i><span class="hidden-tablet"> Greenhouse Gas</span></a></li>
-						<li><a href="#" data-toggle="tab"><i class="fa-icon-trash"></i><span class="hidden-tablet"> Waste Production</span></a></li>
-						<li><a href="#" data-toggle="tab"><i class="fa-icon-truck"></i><span class="hidden-tablet"> Transportation</span></a></li>
-						<li><a href="#" data-toggle="tab"><i class="fa-icon-home"></i><span class="hidden-tablet"> Building Density</span></a></li>
-						<li><a href="#" data-toggle="tab"><i class="fa-icon-sitemap"></i><span class="hidden-tablet"> Resource Flow</span></a></li>
-						<li><a href="#" data-toggle="tab"><i class="fa-icon-money"></i><span class="hidden-tablet"> Potential ROI</span></a></li>
-					</ul>
-				</div>
-			</div>
-			<!-- end: Main Menu -->
-			
-			<!-- start: Content -->
-			<div id="content" class="span11 tab-content">
-				<div class="tab-pane active" id="#">
-					<div id="map3d"></div>
-				</div>
-				<div class="tab-pane" id="#">
-					\
-				</div>
-				<div class="tab-pane" id="#">
-				</div>
-				<div class="tab-pane" id="#">
-				    <p>Howdy, I'm in Section 4.</p>
-				</div>
-				<div class="tab-pane" id="#">
-				    <p>Howdy, I'm in Section 5.</p>
-				</div>
-				<div class="tab-pane" id="#">
-				    <p>Howdy, I'm in Section 6.</p>
-				</div>
-			</div><!-- end: Content -->
+            <div class="tabbable tabs-left">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#E" data-report='explore' data-toggle="tab"><i class="fa-icon-globe"></i><span class="hidden-tablet"> Explore</span></a></li>
+                    <li><a href="#NI" data-toggle="tab"><i class="fa-icon-tint"></i><span class="hidden-tablet"> Water Usage</span></a></li>
+                    <li><a href="#E" data-report='storm_water' data-toggle="tab"><i class="fa-icon-cloud"></i><span class="hidden-tablet"> Storm Water</span></a></li>
+                    <li><a href="#NI" data-toggle="tab"><i class="fa-icon-bolt"></i><span class="hidden-tablet"> Energy Usage</span></a></li>
+                    <li><a href="#NI" data-toggle="tab"><i class="fa-icon-leaf"></i><span class="hidden-tablet"> Greenhouse Gas</span></a></li>
+                    <li><a href="#NI" data-toggle="tab"><i class="fa-icon-trash"></i><span class="hidden-tablet"> Waste Production</span></a></li>
+                    <li><a href="#NI" data-toggle="tab"><i class="fa-icon-truck"></i><span class="hidden-tablet"> Transportation</span></a></li>
+                    <li><a href="#NI" data-toggle="tab"><i class="fa-icon-home"></i><span class="hidden-tablet"> Building Density</span></a></li>
+                    <li><a href="#NI" data-toggle="tab"><i class="fa-icon-sitemap"></i><span class="hidden-tablet"> Resource Flow</span></a></li>
+                    <li><a href="#NI" data-toggle="tab"><i class="fa-icon-money"></i><span class="hidden-tablet"> Potential ROI</span></a></li>
+                </ul>
+                <!-- end: Main Menu -->
+
+                <!-- start: Content -->
+                <div id="content" class="tab-content">
+                    <div class="tab-pane active" id="E">
+                        <div id="map3d"></div>
+                    </div>
+                    <div class="tab-pane" id="WU">
+                        \
+                    </div>
+                    <div class="tab-pane" id="SW">
+                    </div>
+                    <div class="tab-pane" id="NI">
+
+                    </div>
+                </div><!-- end: Content -->
+            </div>
 				
 		<div class="modal hide fade" id="myModal">
 			<div class="modal-header">
