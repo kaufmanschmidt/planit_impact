@@ -16,3 +16,4 @@ create table project(
 
 alter table project add column s3_url varchar(512);
 alter table project add column settings_json text;
+alter table project add column s3_name varchar(512);

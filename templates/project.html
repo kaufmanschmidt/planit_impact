@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block head_js %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"> </script>
+    <script>google.load("earth", "1");</script>
 {% endblock %}
 
 {% block header %}
@@ -33,10 +35,11 @@
 
             <div class="row">
                 <div class="title span9">
-                    <div class="no_kml">
-                        <form id="dropzone" action="kmz">
+                    <div class="kml">
+                        <form id="dropzone" action="kmz_upload">
                         </form>
                     </div>
+                    <div class="loading_kml" style="display: none"><div class="progress_bar"><div class="progress_line"></div></div></div>
                 </div>
                 <div class="span3">
                     <h2>Instructions</h2>
@@ -76,20 +79,93 @@
 {% endblock %}
 
 {% block js_footer %}
+
     <script>
-        window.onload = (function() {
+        $(function() {
             var dropzone = new Dropzone('#dropzone', {
-                url: './kmz',
+                url: './kmz_upload',
+                clickable: false,
                 accept: function(file, done) {
                     done();
+                },
+                sending: function() {
+                    $('.kml').hide();
+                    $('.loading_kml').show();
+                    $('.progress_line').css('width', '0%');
+                },
+                uploadprogress: function(file, progress) {
+                    $('.progress_line').css('width', progress + '%');
                 },
                 success: function() {
                     window.location.href = window.location.href;
                 },
                 error: function() {
                     alert('upload failed');
+
+                    $('.kml').show();
+                    $('.loading_kml').hide();
                 }
             })
+        });
+
+        ge = null;
+
+        $(function() {
+            var model_href = '{{ model.kmz_url }}';
+            if (model_href === '')
+                return;
+
+            $('.kml').append($('<div id="map3d"></div>'));
+
+            ge;
+
+
+            var init = function() {
+                google.earth.createInstance("map3d", initCallback, failureCallback);
+            };
+
+            var initCallback = function(object) {
+                ge = object;
+                ge.getWindow().setVisibility(true);
+                ge.getOptions().setStatusBarVisibility(true);
+                ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
+                //ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, false);
+                //ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, false);
+                //ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
+                //ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
+
+
+
+                google.earth.fetchKml(ge, model_href, function(kmlObject) {
+                    if (kmlObject) {
+                        ge.getFeatures().appendChild(kmlObject);
+
+                        var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
+                        // hard code values
+                        lookAt.setLatitude(39.08969646201485);
+                        lookAt.setLongitude(-94.58089747657677);
+                        lookAt.setAltitude(0);
+                        lookAt.setTilt(70);
+                        lookAt.setRange(130);
+                        lookAt.setHeading(70);
+
+                        ge.getOptions().setFlyToSpeed(ge.SPEED_TELEPORT);
+
+                        // Update the view in Google Earth.
+                        ge.getView().setAbstractView(lookAt);
+                    }
+                });
+
+
+
+                // You can use model.latitude and model.longitude to set the viewpoint to something closer.
+            };
+
+            var failureCallback = function failureCallback(object) {
+              alert('Didn\'t work!');
+            };
+
+            google.setOnLoadCallback(init);
         });
     </script>
 {% endblock %}

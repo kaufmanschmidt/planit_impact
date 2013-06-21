@@ -1,14 +1,17 @@
 import os, json, boto, zipfile, re, pdb
 from boto.s3.key import Key
-from flask import Flask, flash, request, render_template, url_for, redirect, make_response, send_from_directory, flash
+from flask import Flask, flash, request, render_template, Response
 from werkzeug import secure_filename
 
 from flask.ext.heroku import Heroku
 from flask.ext.sqlalchemy import SQLAlchemy
 
+
 try:
     from setup_local import *
 except:
+    cache = None
+    BUCKET_STREAM = False
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME') or 'planit-impact-models'
@@ -44,6 +47,7 @@ class Project(db.Model):
     name = db.Column(db.Unicode)
     description = db.Column(db.Unicode)
     s3_url = db.Column(db.Unicode)
+    s3_name = db.Column(db.Unicode)
     settings_json = db.Column(db.Unicode)
 
     def upload_to_s3(self, name, localpath):
@@ -52,8 +56,28 @@ class Project(db.Model):
         k = Key(mybucket)
         k.key = name
         k.set_contents_from_filename(localpath)
+        mybucket.set_acl('public-read', name)
         conn.close()
+        self.s3_name = name
         self.s3_url = 'https://s3.amazonaws.com/%s/'% S3_BUCKET_NAME + name
+
+    def download_from_s3(self):
+        conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+        mybucket = conn.get_bucket(S3_BUCKET_NAME)
+        k = Key(mybucket)
+        k.key = self.s3_name
+        content = k.get_contents_as_string()
+        conn.close()
+        return content
+
+    @property
+    def kmz_url(self):
+        if not BUCKET_STREAM:
+            return self.s3_url
+        else:
+            if not self.s3_url:
+                return ''
+            return '%s/kmz' % self.name
 
 
 class ThreeDeeModel(db.Model):
@@ -221,8 +245,8 @@ def save_kmz(model, kmz_file):
         db.session.commit()
 
 
-@app.route("/<model_name>/kmz", methods=['GET', 'POST'])
-def project_kmz(model_name):
+@app.route("/<model_name>/kmz_upload", methods=['POST'])
+def project_kmz_upload(model_name):
     model = Project.query.filter_by(name=model_name).first()
 
     if request.method == 'POST':
@@ -230,6 +254,10 @@ def project_kmz(model_name):
 
     return ''
 
+@app.route("/<model_name>/kmz", methods=['GET'])
+def project_kmz(model_name):
+    model = Project.query.filter_by(name=model_name).first()
+    return Response(model.download_from_s3())
 
 if __name__ == "__main__":
     app.run()
