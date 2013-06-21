@@ -22,13 +22,13 @@
         var building = null;
         var stormWater = null;
 
-        var look_at = function() {
+        var look_at = function(tilt) {
             var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
             // hard code values
             lookAt.setLatitude(39.08969646201485);
             lookAt.setLongitude(-94.58089747657677);
             lookAt.setAltitude(0);
-            lookAt.setTilt(70);
+            lookAt.setTilt(tilt || 70);
             lookAt.setRange(230);
             lookAt.setHeading(70);
 
@@ -65,7 +65,7 @@
             }
 
             if (stormWater) {
-                look_at();
+                look_at(30);
                 ge.getFeatures().removeChild(stormWater);
                 ge.getFeatures().appendChild(stormWater);
             }
@@ -78,7 +78,7 @@
                         if (kmlObject) {
                             stormWater = kmlObject;
                             ge.getFeatures().appendChild(stormWater);
-                            look_at();
+                            look_at(30);
                         }
                     },
                     error: function() {
