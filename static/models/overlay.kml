@@ -34,7 +34,7 @@
 
 
 
-    <Placemark class='c4'>
+    <Placemark class='c5'><!--park-->
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -42,8 +42,8 @@
                 <width>4</width>
             </LineStyle>
             <PolyStyle>
-                <color>dd00a5ff</color>
-                <colorMode>normal</colorMode>
+				<color>ddffffff</color>
+				<colorMode>random</colorMode>
             </PolyStyle>
         </Style>
         <Polygon>
@@ -56,28 +56,35 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark class='c5'><!--park-->
-        <Style>
-            <LineStyle>
+
+
+
+    <Placemark class='c4'> <!--grit-->
+		<Style>
+			<LineStyle>
                 <color>66000000</color>
                 <colorMode>normal</colorMode>
                 <width>4</width>
-            </LineStyle>
-            <PolyStyle>
-                <color>9900ffff</color>
+			</LineStyle>
+			<PolyStyle>
+                <color>dd00a5ff</color>
                 <colorMode>normal</colorMode>
-            </PolyStyle>
-        </Style>
-        <Polygon>
-            <outerBoundaryIs>
-                <LinearRing>
-                    <coordinates>
-                        -94.58095134953987,39.0900282876651,0 -94.58095134953987,39.0900282876651,0 -94.58101119477495,39.08938792938976,0 -94.58036448132208,39.08935423741463,0 -94.58033418981717,39.09000191900591,0 -94.58033418981717,39.09000191900591,0 -94.58095134953987,39.0900282876651,0 
-                    </coordinates>
-                </LinearRing>
-            </outerBoundaryIs>
-        </Polygon>
-    </Placemark>
+			</PolyStyle>
+		</Style>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						-94.58033671057275,39.0900360542793,0 -94.58033671057275,39.0900360542793,0 -94.58128432797368,39.0900832764093,0 -94.58128790745245,39.0900508825677,0 -94.58100890143379,39.09003118782918,0 -94.58100525613996,39.09002943058501,0 -94.58106282795623,39.08941507407126,0 -94.58131905062133,39.08942832947933,0 -94.58132226364511,39.08935170714587,0 -94.58036855222531,39.0893013725167,0 -94.580365,39.08930230839646,0 -94.58036,39.08939589657707,0 -94.58094722317171,39.08943271278087,0 -94.5808960633151,39.08998245167413,0 -94.58034124563804,39.08995465094704,0 -94.58034124563804,39.08995465094704,0 -94.58033671057275,39.0900360542793,0
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+
+
+
+
     <Placemark class='c2'><!--right-->
         <Style>
             <LineStyle>
