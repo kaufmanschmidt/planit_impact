@@ -10,7 +10,7 @@
         <Style>
             <LineStyle>
                 <color>ddffffff</color>
-                <colorMode>random</colorMode>
+                <colorMode>normal</colorMode>
                 <width>4</width>
             </LineStyle>
             <PolyStyle>
@@ -42,8 +42,8 @@
                 <width>4</width>
             </LineStyle>
             <PolyStyle>
-				<color>ddffffff</color>
-				<colorMode>random</colorMode>
+				<color>ffffffff</color>
+				<colorMode>normal</colorMode>
             </PolyStyle>
         </Style>
         <Polygon>
