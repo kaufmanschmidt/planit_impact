@@ -371,7 +371,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
