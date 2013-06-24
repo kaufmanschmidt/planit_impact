@@ -31,7 +31,7 @@
 
 {% block main %}
 
-        <div class="container">
+        <div class="container" style="margin-top: 20px">
 
             <div class="row">
                 <div class="title span9">
@@ -44,12 +44,14 @@
                 <div class="span3">
                     <h2>Instructions</h2>
                     <p>We need to gather some information about your project in order to generate a report. The report will only include sections you fill out entirely, and the data used will be saved in your dashboard for future reference. Some data will be pulled from your KML file.</p>
+                    <a href="#" id="a-run-report" class="btn btn-action btn-success">Run Report</a>
                 </div>
             </div>
 
-            <h2>Project Information</h2>
+            <h2 style="font-weight: bold; margin-bottom: 0">{{ model.name }}</h2>
+            <h2 style="margin-top: 0">Project Information</h2>
 
-            <form class="form" method="POST" enctype="multipart/form-data">
+            <form id="settings-form" class="form" method="POST" enctype="multipart/form-data">
                 <fieldset>
 
                     <div class="row">
@@ -57,33 +59,151 @@
                             <legend>KMZ model settings</legend>
                             <input type="file" name="file"><br/>
                         </div>
+                    </div>
 
-                        <div class="span4">
-                            <legend>Storm water settings</legend>
-                            <label>Garden factor</label>
-                            <input name="c5" value="{{ settings.c5 }}"/><br/>
-                            <label>Impervious surface factor</label>
-                            <input name="c2" value="{{ settings.c2 }}"/><br/>
-                            <label>Green roof factor</label>
-                            <input name="c6" value="{{ settings.c6 }}"/><br/>
-                            <label>Wood factor</label>
-                            <input name="c3" value="{{ settings.c3 }}"/><br/>
-                            <label>Pavement factor</label>
-                            <input name="c4" value="{{ settings.c4 }}"/><br/>
+                    <div class="collapsing row">
+                        <legend>Surface data</legend>
+                        <div class="to-collapse">
+                            <div class="span4">
+                                <label>Garden Surface</label>
+                                <input name="c5_area_p" value="{{ settings.c5_area_p }}" readonly="readonly"/><br/>
+                                <label>Impervious Surface</label>
+                                <input name="c2_area_p" value="{{ settings.c2_area_p }}" readonly="readonly"/><br/>
+                            </div>
+                            <div class="span4">
+                                <label>Green Roof Surface</label>
+                                <input name="c6_area_p" value="{{ settings.c6_area_p }}" readonly="readonly"/><br/>
+                                <label>Three Shrub Surface</label>
+                                <input name="c3_area_p" value="{{ settings.c3_area_p }}" readonly="readonly"/><br/>
+                            </div>
+                            <div class="span4">
+                                <label>Pavement Surface</label>
+                                <input name="c4_area_p" value="{{ settings.c4_area_p }}" readonly="readonly"/><br/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="collapsing row">
+                        <legend>Storm water settings</legend>
+                        <div class="to-collapse" style="display: none">
+                            <div class="span4">
+                                <label>Garden factor</label>
+                                <input name="c5" value="{{ settings.c5 }}"/><br/>
+                                <label>Impervious surface factor</label>
+                                <input name="c2" value="{{ settings.c2 }}"/><br/>
+                            </div>
+                            <div class="span4">
+                                <label>Green roof factor</label>
+                                <input name="c6" value="{{ settings.c6 }}"/><br/>
+                                <label>Wood factor</label>
+                                <input name="c3" value="{{ settings.c3 }}"/><br/>
+                            </div>
+                            <div class="span4">
+                                <label>Pavement factor</label>
+                                <input name="c4" value="{{ settings.c4 }}"/><br/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="collapsing row">
+                        <legend>Water Usage Impact Factors</legend>
+                        <div class="to-collapse" style="display: none">
+                            <div class="span4">
+                                <label>Water saver fixtures</label>
+                                <input/>
+                            </div>
+                            <div class="span4">
+                                <label>Site Irrigation Method</label>
+                                <input/><br/>
+                            </div>
+                            <div class="span4">
+                                <label>Occupant Load/Day</label>
+                                <input/><br/>
+                            </div>
+                            <div class="span4">
+                                <label>Average Hours Occupied/Day/Occupant</label>
+                                <input/><br/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="collapsing row">
+                        <legend>Energy Usage</legend>
+                        <div class="to-collapse" style="display: none">
+                        </div>
+                    </div>
+
+                    <div class="collapsing row">
+                        <legend>Greenhouse Gases</legend>
+                        <div class="to-collapse" style="display: none">
+                        </div>
+                    </div>
+
+                    <div class="collapsing row">
+                        <legend>Waste Production</legend>
+                        <div class="to-collapse" style="display: none">
+                        </div>
+                    </div>
+
+                    <div class="collapsing row">
+                        <legend>Transportation</legend>
+                        <div class="to-collapse" style="display: none">
+                        </div>
+                    </div>
+
+                    <div class="collapsing row">
+                        <legend>Building Density and Mix</legend>
+                        <div class="to-collapse" style="display: none">
+                        </div>
+                    </div>
+
+                    <div class="collapsing row">
+                        <legend>Material Resource Flow</legend>
+                        <div class="to-collapse" style="display: none">
+                        </div>
+                    </div>
+
+                    <div class="collapsing row">
+                        <legend>Potential Return of Investment</legend>
+                        <div class="to-collapse" style="display: none">
                         </div>
                     </div>
 
                     <input type="submit" class="btn btn-primary btn-action" name="save_action" value="Save"/>
-                    <input type="submit" class="btn btn-primary btn-action" name="report_action" value="Run Report"/>
+                    <input type="submit" id="submit-run-report" style="display: none" class="btn btn-primary btn-action" name="report_action" value="Run Report"/>
 
                 </fieldset>
             </form>
+
+        </div>
 
 {% endblock %}
 
 {% block js_footer %}
 
     <script>
+
+        $(function() {
+            $("a#a-run-report").click(function(e) {
+                e.preventDefault();
+                $('#submit-run-report').click();
+            });
+
+            $('.collapsing').each(function() {
+                var block = $(this);
+
+                $('legend', block).click(function() {
+                    $('.to-collapse', block).toggle('slow');
+                });
+            });
+
+            $('[name=c1], [name=c2], [name=c3], [name=c4], [name=c5], [name=c6]').change(function() {
+                var $input = $(this);
+
+                var val = parseFloat($input.val()) || 0.0;
+                $input.val(val.toFixed(2));
+            }).change();
+        });
 
         $(function() {
             var dropzone = new Dropzone('#dropzone', {

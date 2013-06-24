@@ -167,7 +167,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -189,7 +189,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-<Placemark class='c3'>
+<Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -211,7 +211,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -233,7 +233,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -283,7 +283,7 @@
         </Polygon>
     </Placemark>
     
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -305,7 +305,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -327,7 +327,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -393,7 +393,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -415,7 +415,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -437,7 +437,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -462,7 +462,7 @@
 
 
 
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
@@ -484,7 +484,7 @@
             </outerBoundaryIs>
         </Polygon>
     </Placemark>
-    <Placemark class='c3'>
+    <Placemark class='c2'>
         <Style>
             <LineStyle>
                 <color>66000000</color>
