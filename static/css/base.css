@@ -645,3 +645,7 @@ a.btn {
 .collapsing .span4 {
     width: 270px;
 }
+
+.collapsing label {
+    margin-top: 10px !important;
+}
