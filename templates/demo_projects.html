@@ -33,7 +33,7 @@
       <div class="container">
         <div class="row">
           <div class="span12">
-            <h1>Create you project</h1>
+            <h1>Create your project</h1>
           </div>
         </div>
       </div>
@@ -44,24 +44,28 @@
 			<div class="span4">
 				<form action="{{ url_for('demo') }}" method="post" enctype="multipart/form-data">
 				  <fieldset>
-				  	<legend>Create a project</legend>
+				  	<h3>Create a project</h3>
                     <label>Name</label>
 				    <input type="text" name="name"/>
                     <label>Description</label>
 				    <input type="text" name="description"/>
                     <br/>
-					<input type="submit" value="Create" class="btn btn-primary btn-action">
+					<input type="submit" value="Create" class="btn btn-primary btn-action"/>
 				  </fieldset>
 				</form>
 			</div>
 			<div class="offset5">
-				<h3>Or choose an existing project.</h3>
+				<h3>Or choose an existing project</h3>
 				<ol>
 				{% for project in all_projects %}
 				    <li>
 				    	<h3>{{ project.name }}</h3>
 				    	<p>{{project.description}}</p>
-				    	<a href="/projects/{{ project.id }}/" class="btn btn-primary btn-action">Edit</a>
+
+                        <form method="POST" action="/projects/{{ project.id }}/delete">
+				    	    <a href="/projects/{{ project.id }}/" class="btn btn-primary btn-action">Edit</a>
+                            <input type="submit" class="btn btn-danger btn-action" value="Delete"/>
+                        </form>
 				    </li>
 				{% endfor %}
 				</ol>

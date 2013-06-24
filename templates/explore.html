@@ -42,6 +42,8 @@
                 ge.getFeatures().removeChild(stormWater);
             }
 
+            ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
+
             if (building) {
                 look_at();
                 ge.getFeatures().removeChild(building);
@@ -63,6 +65,8 @@
             if (building) {
                 ge.getFeatures().removeChild(building);
             }
+
+            ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, false);
 
             if (stormWater) {
                 look_at(30);
@@ -150,16 +154,20 @@
 		<div class="row">
 			<h1 class="title span6">{{model.name}}</h1>
             <div class="span6 share-buttons">
-                <a href="/static/models/report.csv" class="btn btn-primary btn-large pull-right">
-                        Export CSV
+                <a href="/static/models/report.pdf" class="btn btn-success btn-large pull-right">
+                        Export PDF Report
+                </a>
+
+                <a href="/projects/{{ model.id }}" class="btn btn-primary btn-large pull-right">
+                        Settings
                 </a>
 
                 <div class="btn-group pull-right">
-                    <a href="#" class="btn btn-primary btn-large dropdown-toggle" data-toggle='dropdown'>
+                    <a href="#" class="btn btn-large dropdown-toggle" data-toggle='dropdown'>
                         ← Share
                     </a>
                     <div class="dropdown-menu">
-                        <textarea id="share-area" style="width: 300px; height: 30px;"></textarea>
+                        <input id="share-area" style="width: 300px; height: 30px;"/>
                     </div>
                 </div>
             </div>
