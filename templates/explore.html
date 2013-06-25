@@ -30,7 +30,7 @@
             lookAt.setAltitude(0);
             lookAt.setTilt(tilt || 70);
             lookAt.setRange(230);
-            lookAt.setHeading(70);
+            lookAt.setHeading(-65);
 
             ge.getOptions().setFlyToSpeed(0.3);
             // Update the view in Google Earth.
@@ -100,7 +100,7 @@
             ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, false);
             ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, false);
             ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
-            ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
+            ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, false);
 
             showExplore();
         };
