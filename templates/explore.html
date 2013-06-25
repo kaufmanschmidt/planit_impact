@@ -41,6 +41,7 @@
             if (stormWater) {
                 ge.getFeatures().removeChild(stormWater);
             }
+            $('#storm_water-legend').empty();
 
             ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
 
@@ -65,6 +66,8 @@
             if (building) {
                 ge.getFeatures().removeChild(building);
             }
+            $('#storm_water-legend').empty();
+            $('#storm_water-legend').append("<img src=\"{{ url_for('static', filename='img/storm_water_legend.png') }}\"></img>");
 
             ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, false);
 
@@ -192,6 +195,7 @@
                 <!-- start: Content -->
                 <div id="content" class="tab-content">
                     <div class="tab-pane active" id="E">
+                        <div id="storm_water-legend"></div>
                         <div id="map3d"></div>
                     </div>
                     <div class="tab-pane" id="WU">
