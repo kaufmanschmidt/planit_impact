@@ -161,7 +161,26 @@ def demo():
 @app.route("/projects/<model_id>/report")
 def report(model_id):
     model = Project.query.filter_by(id=model_id).first()
-    return render_template('explore.html', model=model)
+    storm_water = 0
+    try:
+        st = json.loads(model.settings_json)
+    except Exception:
+        st = {}
+
+    rv = (st.get('c1', 0) * st.get('c1_area_p', 0) +
+          st.get('c2', 0) * st.get('c2_area_p', 20) +
+          st.get('c3', 0) * st.get('c3_area_p', 10) +
+          st.get('c4', 0) * st.get('c4_area_p', 25) +
+          st.get('c5', 0) * st.get('c5_area_p', 30) +
+          st.get('c6', 0) * st.get('c6_area_p', 15)) / 100
+    pj = 0.9
+    p = 38.86
+    a = 98000
+    r = p * pj * rv
+
+    storm_water = (r/12) * a * 7.48
+
+    return render_template('explore.html', model=model, storm_water=int(storm_water))
 
 
 def float_or_zero(int_str):
@@ -243,6 +262,7 @@ def project(model_id):
                               'c6_area_p': 15, }
 
     return render_template('project.html', model=model, settings=settings_json)
+
 
 def save_kmz(model, kmz_file):
     if '.kmz' in kmz_file.filename:
