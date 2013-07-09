@@ -68,6 +68,7 @@
             }
             $('#storm_water-legend').empty();
             $('#storm_water-legend').append("<img src=\"{{ url_for('static', filename='img/storm_water_legend.png') }}\"></img>");
+            $('#storm_water-legend').append("<span>{{ storm_water }} annual gallons of runoff</span>");
 
             ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, false);
 
