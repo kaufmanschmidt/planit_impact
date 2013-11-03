@@ -1,4 +1,4 @@
-import os, json, boto, zipfile, re, pdb
+import os, json, boto, zipfile, re, requests
 from boto.s3.key import Key
 from flask import Flask, redirect, request, render_template, Response
 from werkzeug import secure_filename
@@ -174,7 +174,10 @@ def report(model_id):
           st.get('c5', 0) * st.get('c5_area_p', 30) +
           st.get('c6', 0) * st.get('c6_area_p', 15)) / 100
     pj = 0.9
-    p = 38.86
+    response = requests.get("http://cfa.cartodb.com/api/v2/sql?q=SELECT rainfall FROM kc_rain_small WHERE st_contains(the_geom, ST_GeomFromText('POINT(-94.581390 39.090340)', 4326))")
+    response = response.json()
+    annual_rainfall = response["rows"][0]["rainfall"]
+    p = annual_rainfall / 100
     a = 98000
     r = p * pj * rv
 
