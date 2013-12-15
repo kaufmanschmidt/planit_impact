@@ -48,4 +48,4 @@ Thumbs.db
 
 # Settings           #
 ######################
-setup_local.py
+setup.sh
