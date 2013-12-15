@@ -95,65 +95,67 @@ def project_delete(model_id):
     all_projects = Project.query.order_by(Project.id.desc()).all()
     return render_template('demo_projects.html', all_projects=all_projects)
 
-@app.route("/projects/<model_id>/", methods=['GET', 'POST'])
-def project(model_id):
-    model = Project.query.filter_by(id=model_id).first()
+@app.route("/projects/<project_id>/", methods=['GET', 'POST'])
+def project(project_id):
+    project = Project.query.filter_by(id=project_id).first()
 
     if request.method == 'POST':
-        c1 = float_or_zero(request.form.get('c1', 0.3))
-        c2 = float_or_zero(request.form.get('c2', 0.9))
-        c3 = float_or_zero(request.form.get('c3', 0.1))
-        c4 = float_or_zero(request.form.get('c4', 0.5))
-        c5 = float_or_zero(request.form.get('c5', 0.15))
-        c6 = float_or_zero(request.form.get('c6', 0.75))
+        pass
 
-        kmz_file = request.files.get('file')
-        if kmz_file:
-            save_kmz(model, kmz_file)
-            c1 = 0.3
-            c2 = 0.9
-            c3 = 0.1
-            c4 = 0.5
-            c5 = 0.15
-            c6 = 0.75
+    #     c1 = float_or_zero(request.form.get('c1', 0.3))
+    #     c2 = float_or_zero(request.form.get('c2', 0.9))
+    #     c3 = float_or_zero(request.form.get('c3', 0.1))
+    #     c4 = float_or_zero(request.form.get('c4', 0.5))
+    #     c5 = float_or_zero(request.form.get('c5', 0.15))
+    #     c6 = float_or_zero(request.form.get('c6', 0.75))
 
-        model.settings_json = json.dumps({
-            'c1': c1,
-            'c2': c2,
-            'c3': c3,
-            'c4': c4,
-            'c5': c5,
-            'c6': c6,
-            'c1_area_p': 0,
-            'c2_area_p': 20,
-            'c3_area_p': 10,
-            'c4_area_p': 25,
-            'c5_area_p': 30,
-            'c6_area_p': 15
-        })
+    #     kmz_file = request.files.get('file')
+    #     if kmz_file:
+    #         save_kmz(model, kmz_file)
+    #         c1 = 0.3
+    #         c2 = 0.9
+    #         c3 = 0.1
+    #         c4 = 0.5
+    #         c5 = 0.15
+    #         c6 = 0.75
 
-        db.session.add(model)
-        db.session.commit()
+    #     model.settings_json = json.dumps({
+    #         'c1': c1,
+    #         'c2': c2,
+    #         'c3': c3,
+    #         'c4': c4,
+    #         'c5': c5,
+    #         'c6': c6,
+    #         'c1_area_p': 0,
+    #         'c2_area_p': 20,
+    #         'c3_area_p': 10,
+    #         'c4_area_p': 25,
+    #         'c5_area_p': 30,
+    #         'c6_area_p': 15
+    #     })
 
-        if request.form.get('report_action'):
-            return redirect('/projects/%s/report' % model.id)
+    #     db.session.add(model)
+    #     db.session.commit()
+
+    #     if request.form.get('report_action'):
+    #         return redirect('/projects/%s/report' % model.id)
 
     try:
-        settings_json = json.loads(model.settings_json)
+        settings_json = json.loads(project.settings_json)
     except:
         settings_json = {}
 
-    if not settings_json:
-        if model.kmz_url:
-            settings_json = { 'c1': 0.3, 'c2': 0.9, 'c3': 0.1, 'c4': 0.5, 'c5': 0.15, 'c6': 0.75,
-                              'c1_area_p': 0,
-                              'c2_area_p': 20,
-                              'c3_area_p': 10,
-                              'c4_area_p': 25,
-                              'c5_area_p': 30,
-                              'c6_area_p': 15, }
+    # if not settings_json:
+    #     if model.kmz_url:
+    #         settings_json = { 'c1': 0.3, 'c2': 0.9, 'c3': 0.1, 'c4': 0.5, 'c5': 0.15, 'c6': 0.75,
+    #                           'c1_area_p': 0,
+    #                           'c2_area_p': 20,
+    #                           'c3_area_p': 10,
+    #                           'c4_area_p': 25,
+    #                           'c5_area_p': 30,
+    #                           'c6_area_p': 15, }
 
-    return render_template('project.html', model=model, settings=settings_json, model_id=model_id)
+    return render_template('project.html', project=project, settings=settings_json)
 
 
 def save_kmz(model, kmz_file):

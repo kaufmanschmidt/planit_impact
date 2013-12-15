@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-            <h2 style="font-weight: bold; margin-bottom: 0">{{ model.name }}</h2>
+            <h2 style="font-weight: bold; margin-bottom: 0">{{ project.name }}</h2>
             <h2 style="margin-top: 0">Project Information</h2>
 
             <form id="settings-form" class="form" method="POST" enctype="multipart/form-data">
@@ -238,7 +238,7 @@
         });
 
         $(function() {
-            var model_href = '{{ model.kmz_url or "" }}';
+            var model_href = '{{ project.kmz_url or "" }}';
             if (model_href === '')
                 return;
 
@@ -288,7 +288,7 @@
         });
 
         $('#delete').click(function(){
-            $.post("/projects/{{ model_id }}/delete", function() {
+            $.post("/projects/{{ project.id }}/delete", function() {
               window.location = '/demo';
             });
         })
