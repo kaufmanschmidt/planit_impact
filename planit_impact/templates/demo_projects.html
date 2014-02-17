@@ -3,36 +3,12 @@
 {% block head_js %}
 {% endblock %}
 
-{% block header %}
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-primary btn-dropnav" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="../index.html">PlanIT Impact</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav pull-right animated">
-                <li><a href="/">Home </a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/features">Features</a></li>
-                <li><a href="/howitworks">How it Works</a></li>
-                <li class="active"><a href="/demo">Demo</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>  
-{% endblock %}
-
 {% block main %}
 
     <div id="header">
       <div class="container">
         <div class="row">
-          <div class="span12">
+          <div class="col-sm-12 col-md-12 col-lg-12">
             <h1>Create your project</h1>
           </div>
         </div>
@@ -42,13 +18,15 @@
 	<div class="container">
 		<div class="row">
 			<div class="span4">
-				<form action="{{ url_for('demo') }}" method="post" enctype="multipart/form-data">
+				<form action="{{ url_for('add_project') }}" method="post" enctype="multipart/form-data">
 				  <fieldset>
 				  	<h3>Create a project</h3>
                     <label>Name</label>
 				    <input type="text" name="name"/>
                     <label>Description</label>
 				    <input type="text" name="description"/>
+				    <label>Upload a 3d model.</label>
+				    <input type="file" name="file"> 
                     <br/>
 					<input type="submit" value="Create" class="btn btn-primary btn-action"/>
 				  </fieldset>

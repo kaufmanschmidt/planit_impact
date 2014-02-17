@@ -36,10 +36,8 @@
 /* General
 -------------------------------------------------- */
 body {
-    background: url("../img/noise.png") repeat scroll 0 0 #FFFFFF;
-	position: relative;
-    padding-top: 60px;
     font-family: "Helvetica Neue","Helvetica",Arial,Verdana,sans-serif;
+    padding-top: 60px;
 }
 h1,
 h2,
@@ -561,20 +559,6 @@ ul.plans {
     color: transparent;
     background: #ccc;
     position: relative;
-}
-
-.kml::after {
-    content: "Drag & Drop Model here";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    margin-top: -24px;
-    margin-left: -250px;
-
-    font-weight: bold;
-    font-size: 48px;
-    color: #777;
 }
 
 .dz-message {

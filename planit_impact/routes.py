@@ -1,6 +1,5 @@
 import os, json, boto, zipfile, re, requests
-from boto.s3.key import Key
-from flask import Flask, redirect, request, render_template, Response
+from flask import Flask, redirect, request, render_template, Response, url_for
 from werkzeug import secure_filename
 from xml.etree import ElementTree
 from StringIO import StringIO
@@ -13,23 +12,18 @@ from models import *
 #----------------------------------------
 
 @app.route("/")
-@app.route("/index")
-@app.route("/index.html")
 def index():
     return render_template('index.html')
 
 @app.route("/about")
-@app.route("/about.html")
 def about():
     return render_template('about.html')
 
 @app.route("/features")
-@app.route("/features.html")
 def features():
     return render_template('features.html')
 
 @app.route("/howitworks")
-@app.route("/howitworks.html")
 def howitworks():
     return render_template('howitworks.html')
 
@@ -39,13 +33,38 @@ def demo():
         model = Project()
         model.name = request.form['name']
         model.description = request.form['description']
-
         db.session.add(model)
         db.session.commit()
 
     all_projects = Project.query.order_by(Project.id.desc()).all()
-
     return render_template('demo_projects.html', all_projects=all_projects)
+
+
+@app.route("/add_project", methods=['POST'])
+def add_project():
+    model = Project()
+    model.name = request.form['name']
+    model.description = request.form['description']
+    filename = secure_filename(request.files['file'].filename)
+    try:
+        os.mkdir('tmp')
+    except Exception as e:
+        pass
+    filepath = 'tmp/'+filename
+    request.files['file'].save(filepath)
+    conn = boto.connect_s3(app.config["AWS_ACCESS_KEY_ID"], app.config["AWS_SECRET_ACCESS_KEY"])
+    mybucket = conn.get_bucket(app.config["S3_BUCKET_NAME"])
+    k = Key(mybucket)
+    k.key = filename
+    k.set_contents_from_filename(filepath)
+    mybucket.set_acl('public-read', filename)
+    conn.close()
+    model.s3_name = model.name
+    model.s3_url = 'https://s3.amazonaws.com/%s/'% app.config["S3_BUCKET_NAME"] + filename
+    db.session.add(model)
+    db.session.commit()
+    model = Project.query.filter_by(name=model.name).first()
+    return redirect('projects/'+str(model.id))
 
 @app.route("/projects/<model_id>/report")
 def report(model_id):
@@ -100,7 +119,7 @@ def project(project_id):
     project = Project.query.filter_by(id=project_id).first()
 
     if request.method == 'POST':
-        pass
+        return redirect('/projects/'+str(project_id)+'/report');
 
     #     c1 = float_or_zero(request.form.get('c1', 0.3))
     #     c2 = float_or_zero(request.form.get('c2', 0.9))
@@ -169,8 +188,7 @@ def save_kmz(model, kmz_file):
         kmz_file.save(filepath)
 
         model.upload_to_s3(filename, filepath)
-        db.session.add(model)
-        db.session.commit()
+        
 
 @app.route("/projects/<model_id>/overlays/storm_water")
 def project_overlay(model_id):

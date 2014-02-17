@@ -2,31 +2,9 @@
 
 {% block head_js %}
     <script type="text/javascript" src="https://www.google.com/jsapi"> </script>
-    <script>google.load("earth", "1");</script>
-{% endblock %}
-
-{% block header %}
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-primary btn-dropnav" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>    
-          <a class="brand" href="../index.html">PlanIT Impact</a>
-	      <div class="nav-collapse collapse">
-	        <ul class="nav pull-right animated">
-		        <li><a href="/">Home </a></li>
-		        <li><a href="/about">About</a></li>
-		        <li><a href="/features">Features</a></li>
-		        <li><a href="/howitworks">How it Works</a></li>
-		        <li class="active"><a href="/demo">Demo</a></li>
-	        </ul>
-	      </div>
-        </div>
-      </div>
-    </div>  
+    <script>
+    google.load("earth", "1", {"other_params":"sensor=false"});
+    </script>
 {% endblock %}
 
 {% block main %}
@@ -36,10 +14,8 @@
             <div class="row">
                 <div class="title span9">
                     <div class="kml">
-                        <form id="dropzone" action="kmz_upload">
-                        </form>
+                        <div id="map3d"></div>
                     </div>
-                    <div class="loading_kml" style="display: none"><div class="progress_bar"><div class="progress_line"></div></div></div>
                 </div>
                 <div class="span3">
                     <h2>Instructions</h2>
@@ -211,38 +187,7 @@
         });
 
         $(function() {
-            var dropzone = new Dropzone('#dropzone', {
-                url: './kmz_upload',
-                clickable: false,
-                accept: function(file, done) {
-                    done();
-                },
-                sending: function() {
-                    $('.kml').hide();
-                    $('.loading_kml').show();
-                    $('.progress_line').css('width', '0%');
-                },
-                uploadprogress: function(file, progress) {
-                    $('.progress_line').css('width', progress + '%');
-                },
-                success: function() {
-                    window.location.href = window.location.href;
-                },
-                error: function() {
-                    alert('upload failed');
-
-                    $('.kml').show();
-                    $('.loading_kml').hide();
-                }
-            })
-        });
-
-        $(function() {
-            var model_href = '{{ project.kmz_url or "" }}';
-            if (model_href === '')
-                return;
-
-            $('.kml').append($('<div id="map3d"></div>'));
+            var model_href = '{{ project.s3_url }}';
 
             var ge;
 
@@ -259,25 +204,11 @@
                 //ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, false);
                 //ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
                 //ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
-
-                google.earth.fetchKml(ge, model_href, function(kmlObject) {
-                    if (kmlObject) {
-                        ge.getFeatures().appendChild(kmlObject);
-                        console.log(kmlObject);
-                        var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);
-                        // hard code values
-                        // lookAt.setLatitude(39.08969646201485);
-                        // lookAt.setLongitude(-94.58089747657677);
-                        // lookAt.setAltitude(0);
-                        // lookAt.setTilt(70);
-                        // lookAt.setRange(130);
-                        // lookAt.setHeading(70);
-
-                        ge.getOptions().setFlyToSpeed(ge.SPEED_TELEPORT);
-                        // Update the view in Google Earth.
-                        ge.getView().setAbstractView(lookAt);
-                    }
-                });
+                var link = ge.createLink('');
+                link.setHref(model_href);
+                var networkLink = ge.createNetworkLink('');
+                networkLink.set(link, true, true); // Sets the link, refreshVisibility, and flyToView
+                ge.getFeatures().appendChild(networkLink);
             };
 
             var failureCallback = function failureCallback(object) {
